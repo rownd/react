@@ -33,10 +33,12 @@ function RowndProvider({ appKey, apiUrl, rootOrigin, children }: RowndProviderPr
 
     let requestSignIn = useCallback((...args: any[]) => callHubApi('requestSignIn', ...args), [callHubApi]);
     let getAccessToken = useCallback((...args: any[]) => callHubApi('getAccessToken', ...args), [callHubApi]);
+    let signOut = useCallback((...args: any[]) => callHubApi('signOut', ...args), [callHubApi]);
 
     let [hubState, setHubState] = React.useState<TRowndContext>({
         requestSignIn,
         getAccessToken,
+        signOut,
         is_initializing: true,
         is_authenticated: false,
         access_token: null,
@@ -72,6 +74,7 @@ function RowndProvider({ appKey, apiUrl, rootOrigin, children }: RowndProviderPr
             // functions
             requestSignIn,
             getAccessToken,
+            signOut,
 
             // data
             is_initializing: state.is_initializing,

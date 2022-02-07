@@ -1,5 +1,6 @@
 export type TRowndContext = {
     requestSignIn: Function;
+    signOut: Function,
     getAccessToken: Function;
     is_authenticated: boolean;
     is_initializing: boolean;
