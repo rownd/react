@@ -26,11 +26,11 @@ type HubScriptInjectorProps = {
 }
 
 export default function HubScriptInjector(props: HubScriptInjectorProps) {
-    let { appKey, rootOrigin, apiUrl, postLoginRedirect, stateListener } = props;
+    let { appKey, rootOrigin, apiUrl, postLoginRedirect, stateListener, hubUrlOverride } = props;
     useEffect(() => {
         var _rphConfig = (window._rphConfig =
             window._rphConfig || []);
-        let baseUrl = window.localStorage.getItem('rph_base_url_override') || props.hubUrlOverride || 'https://hub.rownd.io';
+        let baseUrl = window.localStorage.getItem('rph_base_url_override') || hubUrlOverride || 'https://hub.rownd.io';
         _rphConfig.push(['setBaseUrl', baseUrl]);
         var d = document,
             g = d.createElement('script'),

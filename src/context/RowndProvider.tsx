@@ -15,10 +15,11 @@ type RowndProviderProps = {
     appKey: string;
     apiUrl?: string;
     rootOrigin?: string;
+    hubUrlOverride?: string;
     children: React.ReactNode;
 }
 
-function RowndProvider({ appKey, apiUrl, rootOrigin, children }: RowndProviderProps) {
+function RowndProvider({ appKey, apiUrl, rootOrigin, children, hubUrlOverride }: RowndProviderProps) {
     
     const hubApi = useRef<{[key: string]: any} | null>(null);
     const apiQueue = useRef<{ fnName: string, args: any[]}[]>([]);
@@ -105,6 +106,7 @@ function RowndProvider({ appKey, apiUrl, rootOrigin, children }: RowndProviderPr
                 apiUrl={apiUrl}
                 stateListener={hubListenerCb} 
                 rootOrigin={rootOrigin}
+                hubUrlOverride={hubUrlOverride}
             />
             {children}
         </RowndContext.Provider>
