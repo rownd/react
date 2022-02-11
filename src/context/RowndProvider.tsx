@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import HubScriptInjector from './HubScriptInjector';
 import { TRowndContext } from './types';
 
+// Grab the URL hash ASAP in case it contains an `rph_init` param
+const locationHash = window.location.hash;
+
 const RowndContext = createContext<TRowndContext | undefined>(undefined);
 
 type HubListenerProps = {
@@ -97,7 +100,7 @@ function RowndProvider({ appKey, apiUrl, rootOrigin, children, hubUrlOverride }:
         flushApiQueue();
     }, [flushApiQueue, getAccessToken, requestSignIn]);
 
-    console.log('rph_txstate:', hubState);
+    console.debug('rph_txstate:', hubState);
 
     return (
         <RowndContext.Provider value={hubState}>
@@ -107,6 +110,7 @@ function RowndProvider({ appKey, apiUrl, rootOrigin, children, hubUrlOverride }:
                 stateListener={hubListenerCb} 
                 rootOrigin={rootOrigin}
                 hubUrlOverride={hubUrlOverride}
+                locationHash={locationHash}
             />
             {children}
         </RowndContext.Provider>

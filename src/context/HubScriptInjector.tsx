@@ -23,10 +23,11 @@ type HubScriptInjectorProps = {
     postLoginRedirect?: string;
     stateListener: Function;
     hubUrlOverride?: string;
+    locationHash?: string;
 }
 
 export default function HubScriptInjector(props: HubScriptInjectorProps) {
-    let { appKey, rootOrigin, apiUrl, postLoginRedirect, stateListener, hubUrlOverride } = props;
+    let { appKey, rootOrigin, apiUrl, postLoginRedirect, stateListener, hubUrlOverride, locationHash } = props;
     useEffect(() => {
         var _rphConfig = (window._rphConfig =
             window._rphConfig || []);
@@ -50,6 +51,7 @@ export default function HubScriptInjector(props: HubScriptInjectorProps) {
         setConfigValue('setPostLoginRedirect', postLoginRedirect);
         setConfigValue('setRootOrigin', rootOrigin);
         setConfigValue('setStateListener', stateListener);
+        setConfigValue('setLocationHash', locationHash);
     }, [apiUrl, appKey, postLoginRedirect, rootOrigin, stateListener]);
 
     return null;
