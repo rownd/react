@@ -7,7 +7,12 @@ describe('it', () => {
     const body = document.createElement('body');
     const div = document.createElement('div');
     body.appendChild(div);
-    ReactDOM.render(<RowndProvider appKey="foo"><div /></RowndProvider>, div);
+    ReactDOM.render(
+      <RowndProvider appKey="foo">
+        <div />
+      </RowndProvider>,
+      div
+    );
     ReactDOM.unmountComponentAtNode(div);
   });
 });

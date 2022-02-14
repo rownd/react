@@ -1,6 +1,3 @@
 import { RowndProvider, useRownd } from './RowndProvider';
 
-export {
-    RowndProvider,
-    useRownd
-}
+export { RowndProvider, useRownd };
