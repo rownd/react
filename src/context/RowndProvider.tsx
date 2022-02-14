@@ -5,7 +5,7 @@ import HubScriptInjector from './HubScriptInjector';
 import { TRowndContext } from './types';
 
 // Grab the URL hash ASAP in case it contains an `rph_init` param
-const locationHash = window.location.hash;
+const locationHash = typeof window !== 'undefined' ? window?.location?.hash : void 0;
 
 const RowndContext = createContext<TRowndContext | undefined>(undefined);
 

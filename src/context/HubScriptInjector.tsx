@@ -13,7 +13,7 @@ function setConfigValue(key: string, value: any) {
         return;
     }
 
-    window._rphConfig.push([key, value]);
+    window?._rphConfig.push([key, value]);
 }
 
 type HubScriptInjectorProps = {
@@ -29,6 +29,10 @@ type HubScriptInjectorProps = {
 export default function HubScriptInjector(props: HubScriptInjectorProps) {
     let { appKey, rootOrigin, apiUrl, postLoginRedirect, stateListener, hubUrlOverride, locationHash } = props;
     useEffect(() => {
+        if (!window) {
+            return; // compat with server-side rendering
+        }
+
         var _rphConfig = (window._rphConfig =
             window._rphConfig || []);
         let baseUrl = window.localStorage.getItem('rph_base_url_override') || hubUrlOverride || 'https://hub.rownd.io';
