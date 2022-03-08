@@ -15,20 +15,18 @@ type HubListenerProps = {
   api: any;
 };
 
-type RowndProviderProps = {
+interface RowndProviderProps {
   appKey: string;
   apiUrl?: string;
   rootOrigin?: string;
   hubUrlOverride?: string;
+  postRegistrationUrl?: string;
   children: React.ReactNode;
 };
 
 function RowndProvider({
-  appKey,
-  apiUrl,
-  rootOrigin,
   children,
-  hubUrlOverride,
+  ...rest
 }: RowndProviderProps) {
   const hubApi = useRef<{ [key: string]: any } | null>(null);
   const apiQueue = useRef<{ fnName: string; args: any[] }[]>([]);
@@ -107,6 +105,7 @@ function RowndProvider({
           access_token: state.auth?.access_token,
           app_id: state.auth?.app_id,
           is_authenticated: !!state.auth?.access_token,
+          is_verified_user: state.auth?.is_verified_user,
         },
         user: {
           ...state.user,
@@ -126,12 +125,9 @@ function RowndProvider({
   return (
     <RowndContext.Provider value={hubState}>
       <HubScriptInjector
-        appKey={appKey}
-        apiUrl={apiUrl}
         stateListener={hubListenerCb}
-        rootOrigin={rootOrigin}
-        hubUrlOverride={hubUrlOverride}
         locationHash={locationHash}
+        {...rest}
       />
       {children}
     </RowndContext.Provider>

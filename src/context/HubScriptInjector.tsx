@@ -18,24 +18,12 @@ function setConfigValue(key: string, value: any) {
 
 type HubScriptInjectorProps = {
   appKey: string;
-  rootOrigin?: string;
-  apiUrl?: string;
-  postLoginRedirect?: string;
   stateListener: Function;
   hubUrlOverride?: string;
   locationHash?: string;
 };
 
-export default function HubScriptInjector(props: HubScriptInjectorProps) {
-  let {
-    appKey,
-    rootOrigin,
-    apiUrl,
-    postLoginRedirect,
-    stateListener,
-    hubUrlOverride,
-    locationHash,
-  } = props;
+export default function HubScriptInjector({ appKey, hubUrlOverride, stateListener, locationHash, ...rest}: HubScriptInjectorProps) {
   useEffect(() => {
     if (!window) {
       return; // compat with server-side rendering
@@ -60,19 +48,21 @@ export default function HubScriptInjector(props: HubScriptInjectorProps) {
       d.body.appendChild(g);
     }
 
-    setConfigValue('setApiUrl', apiUrl);
     setConfigValue('setAppKey', appKey);
-    setConfigValue('setPostLoginRedirect', postLoginRedirect);
-    setConfigValue('setRootOrigin', rootOrigin);
     setConfigValue('setStateListener', stateListener);
     setConfigValue('setLocationHash', locationHash);
+
+    console.log('rest:', rest);
+
+    if (rest) {
+      Object.entries(rest).forEach(([key, value]) => {
+        setConfigValue(`set${key.charAt(0).toUpperCase() + key.substring(1)}`, value);
+      });
+      console.log('hubConfig:', window._rphConfig);
+    }
   }, [
-    apiUrl,
     appKey,
-    postLoginRedirect,
-    rootOrigin,
     stateListener,
-    hubUrlOverride,
     locationHash,
   ]);
 

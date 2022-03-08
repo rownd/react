@@ -13,6 +13,7 @@ type AuthContext = {
   access_token: string | null;
   app_id?: string;
   is_authenticated: boolean;
+  is_verified_user?: boolean;
 };
 
 type UserContext = {

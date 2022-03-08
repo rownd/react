@@ -8,7 +8,7 @@ describe('it', () => {
     const div = document.createElement('div');
     body.appendChild(div);
     ReactDOM.render(
-      <RowndProvider appKey="foo">
+      <RowndProvider appKey="foo" postRegistrationUrl="https://foobar">
         <div />
       </RowndProvider>,
       div
