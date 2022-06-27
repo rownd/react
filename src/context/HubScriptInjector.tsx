@@ -23,7 +23,13 @@ type HubScriptInjectorProps = {
   locationHash?: string;
 };
 
-export default function HubScriptInjector({ appKey, hubUrlOverride, stateListener, locationHash, ...rest}: HubScriptInjectorProps) {
+export default function HubScriptInjector({
+  appKey,
+  hubUrlOverride,
+  stateListener,
+  locationHash,
+  ...rest
+}: HubScriptInjectorProps) {
   useEffect(() => {
     if (!window) {
       return; // compat with server-side rendering
@@ -62,15 +68,14 @@ export default function HubScriptInjector({ appKey, hubUrlOverride, stateListene
 
     if (rest) {
       Object.entries(rest).forEach(([key, value]) => {
-        setConfigValue(`set${key.charAt(0).toUpperCase() + key.substring(1)}`, value);
+        setConfigValue(
+          `set${key.charAt(0).toUpperCase() + key.substring(1)}`,
+          value
+        );
       });
       console.log('hubConfig:', window._rphConfig);
     }
-  }, [
-    appKey,
-    stateListener,
-    locationHash,
-  ]);
+  }, [appKey, stateListener, locationHash]);
 
   return null;
 }

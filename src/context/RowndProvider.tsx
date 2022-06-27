@@ -22,12 +22,9 @@ interface RowndProviderProps {
   hubUrlOverride?: string;
   postRegistrationUrl?: string;
   children: React.ReactNode;
-};
+}
 
-function RowndProvider({
-  children,
-  ...rest
-}: RowndProviderProps) {
+function RowndProvider({ children, ...rest }: RowndProviderProps) {
   const hubApi = useRef<{ [key: string]: any } | null>(null);
   const apiQueue = useRef<{ fnName: string; args: any[] }[]>([]);
 
