@@ -23,7 +23,13 @@ type HubScriptInjectorProps = {
   locationHash?: string;
 };
 
-export default function HubScriptInjector({ appKey, hubUrlOverride, stateListener, locationHash, ...rest}: HubScriptInjectorProps) {
+export default function HubScriptInjector({
+  appKey,
+  hubUrlOverride,
+  stateListener,
+  locationHash,
+  ...rest
+}: HubScriptInjectorProps) {
   useEffect(() => {
     if (!window) {
       return; // compat with server-side rendering
@@ -37,15 +43,21 @@ export default function HubScriptInjector({ appKey, hubUrlOverride, stateListene
     _rphConfig.push(['setBaseUrl', baseUrl]);
     var d = document,
       g = d.createElement('script'),
+      m = d.createElement('script'),
       s = d.getElementsByTagName('script')[0];
-    g.type = 'text/javascript';
+    g.noModule = true;
     g.async = true;
     g.src = baseUrl + '/static/scripts/rph.js';
+    m.type = 'module';
+    m.async = true;
+    m.src = baseUrl + '/static/scripts/rph.mjs';
 
     if (s?.parentNode) {
       s.parentNode.insertBefore(g, s);
+      s.parentNode.insertBefore(m, s);
     } else {
       d.body.appendChild(g);
+      d.body.appendChild(m);
     }
 
     setConfigValue('setAppKey', appKey);
@@ -56,15 +68,14 @@ export default function HubScriptInjector({ appKey, hubUrlOverride, stateListene
 
     if (rest) {
       Object.entries(rest).forEach(([key, value]) => {
-        setConfigValue(`set${key.charAt(0).toUpperCase() + key.substring(1)}`, value);
+        setConfigValue(
+          `set${key.charAt(0).toUpperCase() + key.substring(1)}`,
+          value
+        );
       });
       console.log('hubConfig:', window._rphConfig);
     }
-  }, [
-    appKey,
-    stateListener,
-    locationHash,
-  ]);
+  }, [appKey, stateListener, locationHash]);
 
   return null;
 }
