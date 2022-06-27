@@ -37,15 +37,21 @@ export default function HubScriptInjector({ appKey, hubUrlOverride, stateListene
     _rphConfig.push(['setBaseUrl', baseUrl]);
     var d = document,
       g = d.createElement('script'),
+      m = d.createElement('script'),
       s = d.getElementsByTagName('script')[0];
-    g.type = 'text/javascript';
+    g.noModule = true;
     g.async = true;
     g.src = baseUrl + '/static/scripts/rph.js';
+    m.type = 'module';
+    m.async = true;
+    m.src = baseUrl + '/static/scripts/rph.mjs';
 
     if (s?.parentNode) {
       s.parentNode.insertBefore(g, s);
+      s.parentNode.insertBefore(m, s);
     } else {
       d.body.appendChild(g);
+      d.body.appendChild(m);
     }
 
     setConfigValue('setAppKey', appKey);
