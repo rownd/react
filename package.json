@@ -18,6 +18,7 @@
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "prepare": "tsdx build",
+    "release": "release-it",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
@@ -47,13 +48,32 @@
       "limit": "10 KB"
     }
   ],
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "angular"
+      }
+    }
+  },
   "devDependencies": {
+    "@release-it/conventional-changelog": "^5.0.0",
     "@size-limit/preset-small-lib": "^7.0.8",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
     "husky": "^7.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "release-it": "^15.1.0",
     "size-limit": "^7.0.8",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.1",
