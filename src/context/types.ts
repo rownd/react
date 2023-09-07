@@ -1,5 +1,5 @@
 export type TRowndContext = {
-  requestSignIn: Function;
+  requestSignIn: (e?: SignInProps) => void;
   signOut: Function;
   getAccessToken: Function;
   is_authenticated: boolean;
@@ -7,6 +7,11 @@ export type TRowndContext = {
   access_token: string | null;
   auth: AuthContext;
   user: UserContext;
+};
+
+export type SignInProps = {
+  prevent_closing?: boolean;
+  method?: 'email' | 'phone' | 'google' | 'apple' | 'guest';
 };
 
 type AuthContext = {
