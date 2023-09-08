@@ -9,24 +9,18 @@ interface TriggerSignInProps {
     Unauthenticated?: React.ReactNode;
   };
   signInProps?: SignInProps;
-  required?: boolean;
 }
 
 const TriggerSignIn: React.FC<TriggerSignInProps> = ({
   children,
   components,
   signInProps,
-  required,
 }) => {
   const { is_authenticated, is_initializing, requestSignIn } = useRownd();
 
   useEffect(() => {
     if (!is_authenticated && !is_initializing) {
-      const newSignInProps = signInProps || {};
-      if (typeof required === 'boolean') {
-        newSignInProps.prevent_closing = required;
-      }
-      requestSignIn(newSignInProps);
+      requestSignIn(signInProps || {});
     }
   }, [is_authenticated, is_initializing, requestSignIn]);
 

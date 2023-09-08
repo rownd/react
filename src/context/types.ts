@@ -10,9 +10,24 @@ export type TRowndContext = {
 };
 
 export type SignInProps = {
+  identifier?: string;
+  auto_sign_in?: boolean;
+  post_login_redirect?: string;
   prevent_closing?: boolean;
-  method?: 'email' | 'phone' | 'google' | 'apple' | 'guest';
-};
+} & (
+  | {
+      method?: string;
+    }
+  | {
+      method: 'one_tap';
+      method_options?: {
+        prompt_parent_id?: string;
+      };
+    }
+  | {
+      method: 'email' | 'phone' | 'google' | 'apple' | 'passkeys';
+    }
+) & Record<string, string | boolean | number>;
 
 type AuthContext = {
   access_token: string | null;

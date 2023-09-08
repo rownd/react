@@ -6,7 +6,6 @@ function App() {
   
   return (
     <TriggerSignIn
-      required={true}
       components={{
         Initializing: <h1>Initializing...</h1>,
         Unauthenticated: (
@@ -15,9 +14,7 @@ function App() {
       }}
     >
       <h1>Rownd sample app</h1>
-      <div className="card">
-        <button onClick={() => signOut()}>Sign out</button>
-      </div>
+      <button onClick={() => signOut()}>Sign out</button>
     </TriggerSignIn>
   );
 }
