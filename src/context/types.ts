@@ -25,7 +25,7 @@ export type SignInProps = {
       };
     }
   | {
-      method: 'email' | 'phone' | 'google' | 'apple' | 'passkeys';
+      method: 'email' | 'phone' | 'google' | 'apple' | 'passkeys' | 'anonymous';
     }
 ) & Record<string, string | boolean | number>;
 
