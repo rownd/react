@@ -2,18 +2,15 @@ import React, { useEffect } from 'react';
 import { useRownd } from '../context';
 import { SignInProps } from '../context/types';
 
-interface TriggerSignInProps {
-  children: React.ReactNode;
-  components: {
-    Initializing?: React.ReactNode;
-    Unauthenticated?: React.ReactNode;
-  };
+interface RequireSignInProps {
+  children?: React.ReactNode;
+  initializing?: React.ReactNode;
   signInProps?: SignInProps;
 }
 
-const TriggerSignIn: React.FC<TriggerSignInProps> = ({
+const RequireSignIn: React.FC<RequireSignInProps> = ({
   children,
-  components,
+  initializing,
   signInProps,
 }) => {
   const { is_authenticated, is_initializing, requestSignIn } = useRownd();
@@ -24,15 +21,11 @@ const TriggerSignIn: React.FC<TriggerSignInProps> = ({
     }
   }, [is_authenticated, is_initializing, requestSignIn]);
 
-  if (is_initializing && components.Initializing) {
-    return <>{components.Initializing}</>;
-  }
-
-  if (!is_authenticated && components.Unauthenticated) {
-    return <>{components.Unauthenticated}</>;
+  if (is_initializing && initializing) {
+    return <>{initializing}</>;
   }
 
   return <>{children}</>;
 };
 
-export default TriggerSignIn;
+export default RequireSignIn;
