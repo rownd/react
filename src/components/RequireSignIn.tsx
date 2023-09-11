@@ -17,7 +17,7 @@ const RequireSignIn: React.FC<RequireSignInProps> = ({
 
   useEffect(() => {
     if (!is_authenticated && !is_initializing) {
-      requestSignIn(signInProps || {});
+      requestSignIn({ prevent_closing: true, ...signInProps });
     }
   }, [is_authenticated, is_initializing, requestSignIn]);
 
