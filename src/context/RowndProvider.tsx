@@ -117,7 +117,9 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     [flushApiQueue, getAccessToken, requestSignIn, signOut]
   );
 
-  console.debug('rph_txstate:', hubState);
+  if (window.localStorage.getItem('rownd_debug') === 'true') {
+    console.debug('rph_txstate:', hubState);
+  }
 
   return (
     <RowndContext.Provider value={hubState}>

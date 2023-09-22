@@ -27,7 +27,7 @@ export type SignInProps = {
   | {
       method: 'email' | 'phone' | 'google' | 'apple' | 'passkeys' | 'anonymous';
     }
-)
+);
 
 type AuthContext = {
   access_token: string | null;
