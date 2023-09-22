@@ -19,7 +19,7 @@ const RequireSignIn: React.FC<RequireSignInProps> = ({
     if (!is_authenticated && !is_initializing) {
       requestSignIn({ prevent_closing: true, ...signInProps });
     }
-  }, [is_authenticated, is_initializing, requestSignIn]);
+  }, [is_authenticated, is_initializing, requestSignIn, signInProps]);
 
   if (is_initializing && initializing) {
     return <>{initializing}</>;
