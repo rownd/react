@@ -1,5 +1,5 @@
 export type TRowndContext = {
-  requestSignIn: Function;
+  requestSignIn: (e?: SignInProps) => void;
   signOut: Function;
   getAccessToken: Function;
   is_authenticated: boolean;
@@ -8,6 +8,26 @@ export type TRowndContext = {
   auth: AuthContext;
   user: UserContext;
 };
+
+export type SignInProps = {
+  identifier?: string;
+  auto_sign_in?: boolean;
+  post_login_redirect?: string;
+  prevent_closing?: boolean;
+} & (
+  | {
+      method?: string;
+    }
+  | {
+      method: 'one_tap';
+      method_options?: {
+        prompt_parent_id?: string;
+      };
+    }
+  | {
+      method: 'email' | 'phone' | 'google' | 'apple' | 'passkeys' | 'anonymous';
+    }
+)
 
 type AuthContext = {
   access_token: string | null;
