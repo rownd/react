@@ -19,13 +19,13 @@ function setConfigValue(key: string, value: any) {
 type HubScriptInjectorProps = {
   appKey: string;
   stateListener: Function;
-  hubUrlOverride?: string;
+  baseUrl?: string;
   locationHash?: string;
 };
 
 export default function HubScriptInjector({
   appKey,
-  hubUrlOverride,
+  baseUrl,
   stateListener,
   locationHash,
   ...rest
@@ -36,11 +36,12 @@ export default function HubScriptInjector({
     }
 
     var _rphConfig = (window._rphConfig = window._rphConfig || []);
-    let baseUrl =
+    _rphConfig.push([
+      'setBaseUrl',
       window.localStorage.getItem('rph_base_url_override') ||
-      hubUrlOverride ||
-      'https://hub.rownd.io';
-    _rphConfig.push(['setBaseUrl', baseUrl]);
+        baseUrl ||
+        'https://hub.rownd.io',
+    ]);
     var d = document,
       g = d.createElement('script'),
       m = d.createElement('script'),
