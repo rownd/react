@@ -9,6 +9,7 @@ export type TRowndContext = {
     waitForToken?: string;
     [key: string]: any;
   }) => Promise<string | undefined | null>;
+  getFirebaseIdToken: (token: string) => Promise<string>; 
   is_authenticated: boolean;
   is_initializing: boolean;
   access_token: string | null;

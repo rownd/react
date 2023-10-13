@@ -73,6 +73,10 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     (...args: any[]) => callHubApi(['user','setValue'], ...args),
     [callHubApi]
   );
+  let getFirebaseIdToken = useCallback(
+    (...args: any[]) => callHubApi(['firebase','getIdToken'], ...args),
+    [callHubApi]
+  );
 
   let [hubState, setHubState] = React.useState<TRowndContext>({
     requestSignIn,
@@ -81,6 +85,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     manageAccount,
     setUser,
     setUserValue,
+    getFirebaseIdToken,
     is_initializing: true,
     is_authenticated: false,
     access_token: null,
@@ -122,6 +127,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
         manageAccount,
         setUser,
         setUserValue,
+        getFirebaseIdToken,
         // data
         is_initializing: state.is_initializing,
         is_authenticated: !!state.auth?.access_token,

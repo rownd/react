@@ -35,12 +35,15 @@ export default function HubScriptInjector({
       return; // compat with server-side rendering
     }
 
+    const newBaseUrl =
+      window.localStorage.getItem('rph_base_url_override') ||
+      baseUrl ||
+      'https://hub.rownd.io';
+
     var _rphConfig = (window._rphConfig = window._rphConfig || []);
     _rphConfig.push([
       'setBaseUrl',
-      window.localStorage.getItem('rph_base_url_override') ||
-        baseUrl ||
-        'https://hub.rownd.io',
+      newBaseUrl,
     ]);
     var d = document,
       g = d.createElement('script'),
@@ -48,10 +51,10 @@ export default function HubScriptInjector({
       s = d.getElementsByTagName('script')[0];
     g.noModule = true;
     g.async = true;
-    g.src = baseUrl + '/static/scripts/rph.js';
+    g.src = newBaseUrl + '/static/scripts/rph.js';
     m.type = 'module';
     m.async = true;
-    m.src = baseUrl + '/static/scripts/rph.mjs';
+    m.src = newBaseUrl + '/static/scripts/rph.mjs';
 
     if (s?.parentNode) {
       s.parentNode.insertBefore(g, s);
