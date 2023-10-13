@@ -19,7 +19,7 @@ interface RowndProviderProps {
   appKey: string;
   apiUrl?: string;
   rootOrigin?: string;
-  baseUrl?: string;
+  hubUrlOverride?: string;
   postRegistrationUrl?: string;
   children: React.ReactNode;
 }
@@ -28,14 +28,20 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
   const hubApi = useRef<{ [key: string]: any } | null>(null);
   const apiQueue = useRef<{ fnNames: string[]; args: any[] }[]>([]);
 
-  let selectHubApi = useCallback((obj: { [key: string]: any } | null, fnNames: string[]): any => {
-    if (fnNames.length === 1 || obj === undefined) {
-      return obj?.[fnNames[0]];
-    }
-  
-    const firstKey = fnNames[0];
-    return selectHubApi(obj?.[firstKey], fnNames?.filter((x) => x !== firstKey));
-  }, [])
+  let selectHubApi = useCallback(
+    (obj: { [key: string]: any } | null, fnNames: string[]): any => {
+      if (fnNames.length === 1 || obj === undefined) {
+        return obj?.[fnNames[0]];
+      }
+
+      const firstKey = fnNames[0];
+      return selectHubApi(
+        obj?.[firstKey],
+        fnNames?.filter(x => x !== firstKey)
+      );
+    },
+    []
+  );
 
   let callHubApi = useCallback(
     (fnNames: string[], ...args: any[]) => {
@@ -54,7 +60,8 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     [callHubApi]
   );
   let getAccessToken = useCallback(
-    (...args: any[]): Promise<string | undefined | null> => callHubApi(['getAccessToken'], ...args),
+    (...args: any[]): Promise<string | undefined | null> =>
+      callHubApi(['getAccessToken'], ...args),
     [callHubApi]
   );
   let signOut = useCallback(
@@ -62,19 +69,19 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     [callHubApi]
   );
   let manageAccount = useCallback(
-    (...args: any[]) => callHubApi(['user','manageAccount'], ...args),
+    (...args: any[]) => callHubApi(['user', 'manageAccount'], ...args),
     [callHubApi]
   );
   let setUser = useCallback(
-    (...args: any[]) => callHubApi(['user','set'], ...args),
+    (...args: any[]) => callHubApi(['user', 'set'], ...args),
     [callHubApi]
   );
   let setUserValue = useCallback(
-    (...args: any[]) => callHubApi(['user','setValue'], ...args),
+    (...args: any[]) => callHubApi(['user', 'setValue'], ...args),
     [callHubApi]
   );
   let getFirebaseIdToken = useCallback(
-    (...args: any[]) => callHubApi(['firebase','getIdToken'], ...args),
+    (...args: any[]) => callHubApi(['firebase', 'getIdToken'], ...args),
     [callHubApi]
   );
 
@@ -106,7 +113,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     }
 
     for (let { fnNames, args } of apiQueue.current) {
-      const selectedHubApi = selectHubApi(hubApi.current, fnNames)
+      const selectedHubApi = selectHubApi(hubApi.current, fnNames);
       if (!selectedHubApi) {
         return;
       }
