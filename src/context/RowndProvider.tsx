@@ -26,29 +26,62 @@ interface RowndProviderProps {
 
 function RowndProvider({ children, ...rest }: RowndProviderProps) {
   const hubApi = useRef<{ [key: string]: any } | null>(null);
-  const apiQueue = useRef<{ fnName: string; args: any[] }[]>([]);
+  const apiQueue = useRef<{ fnNames: string[]; args: any[] }[]>([]);
 
-  let callHubApi = useCallback(
-    (fnName: string, ...args: any[]) => {
-      if (hubApi.current?.[fnName]) {
-        return hubApi.current[fnName](...args);
+  let selectHubApi = useCallback(
+    (obj: { [key: string]: any } | null, fnNames: string[]): any => {
+      if (fnNames.length === 1 || obj === undefined) {
+        return obj?.[fnNames[0]];
       }
 
-      apiQueue.current.push({ fnName, args });
+      const firstKey = fnNames[0];
+      return selectHubApi(
+        obj?.[firstKey],
+        fnNames?.filter(x => x !== firstKey)
+      );
     },
-    [hubApi]
+    []
+  );
+
+  let callHubApi = useCallback(
+    (fnNames: string[], ...args: any[]) => {
+      const selectedHubApi = selectHubApi(hubApi.current, fnNames);
+      if (selectedHubApi) {
+        return selectedHubApi(...args);
+      }
+
+      apiQueue.current.push({ fnNames, args });
+    },
+    [hubApi, selectHubApi]
   );
 
   let requestSignIn = useCallback(
-    (...args: any[]) => callHubApi('requestSignIn', ...args),
+    (...args: any[]) => callHubApi(['requestSignIn'], ...args),
     [callHubApi]
   );
   let getAccessToken = useCallback(
-    (...args: any[]) => callHubApi('getAccessToken', ...args),
+    (...args: any[]): Promise<string | undefined | null> =>
+      callHubApi(['getAccessToken'], ...args),
     [callHubApi]
   );
   let signOut = useCallback(
-    (...args: any[]) => callHubApi('signOut', ...args),
+    (...args: any[]) => callHubApi(['signOut'], ...args),
+    [callHubApi]
+  );
+  let manageAccount = useCallback(
+    (...args: any[]) => callHubApi(['user', 'manageAccount'], ...args),
+    [callHubApi]
+  );
+  let setUser = useCallback(
+    (...args: any[]) => callHubApi(['user', 'set'], ...args),
+    [callHubApi]
+  );
+  let setUserValue = useCallback(
+    (...args: any[]) => callHubApi(['user', 'setValue'], ...args),
+    [callHubApi]
+  );
+  let getFirebaseIdToken = useCallback(
+    (...args: any[]) => callHubApi(['firebase', 'getIdToken'], ...args),
     [callHubApi]
   );
 
@@ -56,6 +89,10 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     requestSignIn,
     getAccessToken,
     signOut,
+    manageAccount,
+    setUser,
+    setUserValue,
+    getFirebaseIdToken,
     is_initializing: true,
     is_authenticated: false,
     access_token: null,
@@ -75,16 +112,17 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
       return;
     }
 
-    for (let { fnName, args } of apiQueue.current) {
-      if (!hubApi.current?.[fnName]) {
+    for (let { fnNames, args } of apiQueue.current) {
+      const selectedHubApi = selectHubApi(hubApi.current, fnNames);
+      if (!selectedHubApi) {
         return;
       }
 
-      hubApi.current[fnName](...args);
+      selectedHubApi(...args);
     }
 
     apiQueue.current.length = 0;
-  }, [apiQueue]);
+  }, [apiQueue, selectHubApi]);
 
   let hubListenerCb = useCallback(
     ({ state, api }: HubListenerProps) => {
@@ -93,7 +131,10 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
         requestSignIn,
         getAccessToken,
         signOut,
-
+        manageAccount,
+        setUser,
+        setUserValue,
+        getFirebaseIdToken,
         // data
         is_initializing: state.is_initializing,
         is_authenticated: !!state.auth?.access_token,
@@ -114,7 +155,16 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
 
       flushApiQueue();
     },
-    [flushApiQueue, getAccessToken, requestSignIn, signOut]
+    [
+      flushApiQueue,
+      getAccessToken,
+      requestSignIn,
+      signOut,
+      getFirebaseIdToken,
+      manageAccount,
+      setUser,
+      setUserValue,
+    ]
   );
 
   if (window.localStorage.getItem('rownd_debug') === 'true') {
