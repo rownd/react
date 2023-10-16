@@ -155,7 +155,16 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
 
       flushApiQueue();
     },
-    [flushApiQueue, getAccessToken, requestSignIn, signOut, getFirebaseIdToken]
+    [
+      flushApiQueue,
+      getAccessToken,
+      requestSignIn,
+      signOut,
+      getFirebaseIdToken,
+      manageAccount,
+      setUser,
+      setUserValue,
+    ]
   );
 
   console.debug('rph_txstate:', hubState);

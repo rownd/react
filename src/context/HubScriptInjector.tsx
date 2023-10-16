@@ -75,7 +75,7 @@ export default function HubScriptInjector({
       });
       console.log('hubConfig:', window._rphConfig);
     }
-  }, [appKey, stateListener, locationHash, hubUrlOverride]);
+  }, [appKey, stateListener, locationHash, hubUrlOverride, rest]);
 
   return null;
 }
