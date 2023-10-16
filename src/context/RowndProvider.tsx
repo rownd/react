@@ -52,7 +52,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
 
       apiQueue.current.push({ fnNames, args });
     },
-    [hubApi]
+    [hubApi, selectHubApi]
   );
 
   let requestSignIn = useCallback(
@@ -122,7 +122,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     }
 
     apiQueue.current.length = 0;
-  }, [apiQueue]);
+  }, [apiQueue, selectHubApi]);
 
   let hubListenerCb = useCallback(
     ({ state, api }: HubListenerProps) => {
@@ -155,7 +155,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
 
       flushApiQueue();
     },
-    [flushApiQueue, getAccessToken, requestSignIn, signOut]
+    [flushApiQueue, getAccessToken, requestSignIn, signOut, getFirebaseIdToken]
   );
 
   console.debug('rph_txstate:', hubState);
