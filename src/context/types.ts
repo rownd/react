@@ -10,6 +10,7 @@ export type TRowndContext = {
     [key: string]: any;
   }) => Promise<string | undefined | null>;
   getFirebaseIdToken: (token: string) => Promise<string>;
+  getAppConfig: () => any;
   is_authenticated: boolean;
   is_initializing: boolean;
   access_token: string | null;
@@ -46,7 +47,14 @@ type AuthContext = {
 
 type UserContext = {
   data: UserDataContext;
+  groups: UserGroup[];
   redacted_fields: string[];
+  verified_data: {
+    [key: string]: any | null;
+  };
+  meta: {
+    [key: string]: any | null;
+  };
 };
 
 type UserDataContext = {
@@ -55,3 +63,31 @@ type UserDataContext = {
   phone?: string | null;
   [key: string]: any;
 };
+
+export interface UserGroup {
+  group: Group;
+  member: GroupMember;
+}
+
+export interface Group {
+  id: string;
+  name: string;
+  app_id: string;
+  admission_policy: string;
+  created_at: string;
+  updated_at: string;
+  updated_by?: string;
+}
+
+export interface GroupMember {
+  id: string;
+  app_id: string;
+  user_id: string;
+  roles: string[];
+  group_id: string;
+  state: string;
+  invited_by?: string;
+  added_by?: string;
+  updated_at?: Date;
+  updated_by?: string;
+}
