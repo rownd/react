@@ -174,8 +174,8 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     ]
   );
 
-  if (window.localStorage.getItem('rownd_debug') === 'true') {
-    console.debug('rph_txstate:', hubState);
+  if (window?.localStorage.getItem('rph_log_level') === 'debug') {
+    console.debug('[debug] rph_txstate:', hubState);
   }
 
   return (

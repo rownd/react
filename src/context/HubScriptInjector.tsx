@@ -65,8 +65,8 @@ export default function HubScriptInjector({
     setConfigValue('setStateListener', stateListener);
     setConfigValue('setLocationHash', locationHash);
 
-    if (window.localStorage.getItem('rownd_debug') === 'true') {
-      console.debug('rest:', rest);
+    if (window.localStorage.getItem('rph_log_level') === 'debug') {
+      console.debug('[debug] rest:', rest);
     }
 
     if (rest) {
@@ -77,8 +77,8 @@ export default function HubScriptInjector({
         );
       });
 
-      if (window.localStorage.getItem('rownd_debug') === 'true') {
-        console.debug('hubConfig:', window._rphConfig);
+      if (window.localStorage.getItem('rph_log_level') === 'debug') {
+        console.debug('[debug] hubConfig:', window._rphConfig);
       }
     }
   }, [appKey, stateListener, locationHash, hubUrlOverride, rest]);
