@@ -10,7 +10,7 @@ const locationHash =
 
 const RowndContext = createContext<TRowndContext | undefined>(undefined);
 
-type HubListenerProps = {
+export type HubListenerProps = {
   state: any;
   api: any;
 };
@@ -28,7 +28,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
   const hubApi = useRef<{ [key: string]: any } | null>(null);
   const apiQueue = useRef<{ fnNames: string[]; args: any[] }[]>([]);
 
-  let selectHubApi = useCallback(
+  const selectHubApi = useCallback(
     (obj: { [key: string]: any } | null, fnNames: string[]): any => {
       if (fnNames.length === 1 || obj === undefined) {
         return obj?.[fnNames[0]];
@@ -43,7 +43,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     []
   );
 
-  let callHubApi = useCallback(
+  const callHubApi = useCallback(
     (fnNames: string[], ...args: any[]) => {
       const selectedHubApi = selectHubApi(hubApi.current, fnNames);
       if (selectedHubApi) {
@@ -55,37 +55,39 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     [hubApi, selectHubApi]
   );
 
-  let requestSignIn = useCallback(
+  const requestSignIn = useCallback(
     (...args: any[]) => callHubApi(['requestSignIn'], ...args),
     [callHubApi]
   );
-  let getAccessToken = useCallback(
+  const getAccessToken = useCallback(
     (...args: any[]): Promise<string | undefined | null> =>
       callHubApi(['getAccessToken'], ...args),
     [callHubApi]
   );
-  let signOut = useCallback(
+  const signOut = useCallback(
     (...args: any[]) => callHubApi(['signOut'], ...args),
     [callHubApi]
   );
-  let manageAccount = useCallback(
+  const manageAccount = useCallback(
     (...args: any[]) => callHubApi(['user', 'manageAccount'], ...args),
     [callHubApi]
   );
-  let setUser = useCallback(
+  const setUser = useCallback(
     (...args: any[]) => callHubApi(['user', 'set'], ...args),
     [callHubApi]
   );
-  let setUserValue = useCallback(
+  const setUserValue = useCallback(
     (...args: any[]) => callHubApi(['user', 'setValue'], ...args),
     [callHubApi]
   );
-  let getFirebaseIdToken = useCallback(
+  const getFirebaseIdToken = useCallback(
     (...args: any[]) => callHubApi(['firebase', 'getIdToken'], ...args),
     [callHubApi]
   );
 
-  let [hubState, setHubState] = React.useState<TRowndContext>({
+  const getAppConfig = useCallback(() => callHubApi(['getAppConfig']), [callHubApi]);
+
+  const [hubState, setHubState] = React.useState<TRowndContext>({
     requestSignIn,
     getAccessToken,
     signOut,
@@ -93,6 +95,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     setUser,
     setUserValue,
     getFirebaseIdToken,
+    getAppConfig,
     is_initializing: true,
     is_authenticated: false,
     access_token: null,
@@ -102,7 +105,10 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     },
     user: {
       data: {},
+      groups: [],
       redacted_fields: [],
+      verified_data: {},
+      meta: {},
     },
   });
 
@@ -112,7 +118,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
       return;
     }
 
-    for (let { fnNames, args } of apiQueue.current) {
+    for (const { fnNames, args } of apiQueue.current) {
       const selectedHubApi = selectHubApi(hubApi.current, fnNames);
       if (!selectedHubApi) {
         return;
@@ -124,9 +130,9 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     apiQueue.current.length = 0;
   }, [apiQueue, selectHubApi]);
 
-  let hubListenerCb = useCallback(
+  const hubListenerCb = useCallback(
     ({ state, api }: HubListenerProps) => {
-      let transformedState: TRowndContext = {
+      const transformedState: TRowndContext = {
         // functions
         requestSignIn,
         getAccessToken,
@@ -135,6 +141,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
         setUser,
         setUserValue,
         getFirebaseIdToken,
+        getAppConfig,
         // data
         is_initializing: state.is_initializing,
         is_authenticated: !!state.auth?.access_token,
@@ -167,8 +174,8 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     ]
   );
 
-  if (window.localStorage.getItem('rownd_debug') === 'true') {
-    console.debug('rph_txstate:', hubState);
+  if (window?.localStorage.getItem('rph_log_level') === 'debug') {
+    console.debug('[debug] rph_txstate:', hubState);
   }
 
   return (

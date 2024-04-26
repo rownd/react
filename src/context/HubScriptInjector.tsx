@@ -1,6 +1,7 @@
 // import React from 'react';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
+import { HubListenerProps } from './RowndProvider';
 
 declare global {
   interface Window {
@@ -18,7 +19,7 @@ function setConfigValue(key: string, value: any) {
 
 type HubScriptInjectorProps = {
   appKey: string;
-  stateListener: Function;
+  stateListener: ({ state, api }: HubListenerProps) => void;
   hubUrlOverride?: string;
   locationHash?: string;
 };
@@ -35,13 +36,13 @@ export default function HubScriptInjector({
       return; // compat with server-side rendering
     }
 
-    var _rphConfig = (window._rphConfig = window._rphConfig || []);
-    let baseUrl =
+    const _rphConfig = (window._rphConfig = window._rphConfig || []);
+    const baseUrl =
       window.localStorage.getItem('rph_base_url_override') ||
       hubUrlOverride ||
       'https://hub.rownd.io';
     _rphConfig.push(['setBaseUrl', baseUrl]);
-    var d = document,
+    const d = document,
       g = d.createElement('script'),
       m = d.createElement('script'),
       s = d.getElementsByTagName('script')[0];
@@ -64,8 +65,8 @@ export default function HubScriptInjector({
     setConfigValue('setStateListener', stateListener);
     setConfigValue('setLocationHash', locationHash);
 
-    if (window.localStorage.getItem('rownd_debug') === 'true') {
-      console.debug('rest:', rest);
+    if (window.localStorage.getItem('rph_log_level') === 'debug') {
+      console.debug('[debug] rest:', rest);
     }
 
     if (rest) {
@@ -76,8 +77,8 @@ export default function HubScriptInjector({
         );
       });
 
-      if (window.localStorage.getItem('rownd_debug') === 'true') {
-        console.debug('hubConfig:', window._rphConfig);
+      if (window.localStorage.getItem('rph_log_level') === 'debug') {
+        console.debug('[debug] hubConfig:', window._rphConfig);
       }
     }
   }, [appKey, stateListener, locationHash, hubUrlOverride, rest]);
