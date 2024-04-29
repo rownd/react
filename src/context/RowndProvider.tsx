@@ -145,12 +145,14 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
         // data
         is_initializing: state.is_initializing,
         is_authenticated: !!state.auth?.access_token,
+        auth_level: state.auth.auth_level,
         access_token: state.auth?.access_token || null,
         auth: {
           access_token: state.auth?.access_token,
           app_id: state.auth?.app_id,
           is_authenticated: !!state.auth?.access_token,
           is_verified_user: state.auth?.is_verified_user,
+          auth_level: state.auth.auth_level,
         },
         user: {
           ...state.user,

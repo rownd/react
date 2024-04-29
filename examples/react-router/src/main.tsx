@@ -7,7 +7,7 @@ import Router from './router/router.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RowndProvider appKey='key_bec29kgy4l1zu14vwy63rq62'>
+    <RowndProvider appKey='key_d3yu5v2r1kmy89vcxppslc74'>
       <Router />
     </RowndProvider>
   </React.StrictMode>,
