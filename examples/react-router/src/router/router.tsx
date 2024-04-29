@@ -1,28 +1,20 @@
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren } from 'react';
 
-import {
-    createBrowserRouter,
-    RouterProvider,
-  } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Welcome from './welcome/Welcome.tsx';
 import Dashboard from './dashboard/Dashboard.tsx';
-  
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Welcome />,
-      errorElement: <h1>Error page</h1>,
-    },
-    {
-      path: "dashboard",
-      element: <Dashboard />,
-    },
-  ]);
+import Header from './header/Header.tsx';
 
 const Router: React.FC<PropsWithChildren> = () => {
   return (
-    <RouterProvider router={router} />
-  )
-}
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Welcome />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
-export default Router
+export default Router;

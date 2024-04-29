@@ -17,13 +17,11 @@ function Welcome() {
       {user.instant_user?.is_initializing && (
         <h2>Initializing instant user...</h2>
       )}
-      {is_authenticated ? (
+      {is_authenticated && (
         <>
           <h2>Authenticated</h2>
           <h2>Auth level: {auth_level}</h2>
         </>
-      ) : (
-        <h2>Un-authenticated</h2>
       )}
       <Link to={'/dashboard'}>Go to Dashboard</Link>
     </>
