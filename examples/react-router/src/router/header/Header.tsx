@@ -2,7 +2,7 @@ import React from 'react';
 import './Header.css';
 import { useRownd } from '../../../../../src';
 
-const Header = () => {
+const Header: React.FC = () => {
   const { is_authenticated, auth_level, requestSignIn, signOut } = useRownd();
 
   const is_instant_user = is_authenticated && auth_level === 'instant';

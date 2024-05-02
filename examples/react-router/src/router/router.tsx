@@ -1,17 +1,25 @@
-import React, { PropsWithChildren } from 'react';
-
+import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Welcome from './welcome/Welcome.tsx';
 import Dashboard from './dashboard/Dashboard.tsx';
 import Header from './header/Header.tsx';
 
-const Router: React.FC<PropsWithChildren> = () => {
+import { RequireSignIn } from '../../../../src/index.tsx';
+
+const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <Header />
       <Routes>
         <Route path="/" element={<Welcome />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route
+          path="/dashboard"
+          element={
+            <RequireSignIn>
+              <Dashboard />
+            </RequireSignIn>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

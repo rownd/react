@@ -1,7 +1,8 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { RequireSignIn, useRownd } from '../../../../../src/index.tsx';
+import { useRownd } from '../../../../../src/index.tsx';
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const { is_authenticated, auth_level } = useRownd();
   return (
     <>
@@ -15,7 +16,6 @@ const Dashboard = () => {
       <br />
       <br />
       <Link to={'/'}>Go to welcome</Link>
-      <RequireSignIn />
     </>
   );
 };

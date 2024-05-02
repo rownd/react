@@ -1,14 +1,9 @@
 import './Welcome.css';
 import { useRownd } from '../../../../../src/index';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
 
 function Welcome() {
   const { is_initializing, is_authenticated, auth_level, user } = useRownd();
-
-  useEffect(() => {
-    console.log({ auth_level });
-  }, [auth_level]);
 
   return (
     <>
