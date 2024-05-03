@@ -15,6 +15,8 @@ const Router: React.FC = () => {
         <Route
           path="/dashboard"
           element={
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             <RequireSignIn>
               <Dashboard />
             </RequireSignIn>

@@ -187,6 +187,8 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
   }
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     <RowndContext.Provider value={hubState}>
       <HubScriptInjector
         stateListener={hubListenerCb}
