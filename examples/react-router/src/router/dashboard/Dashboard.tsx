@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useRownd } from '../../../../../src/index.tsx';
+import { useRownd } from '@rownd/react';
 
 const Dashboard: React.FC = () => {
   const { is_authenticated, auth_level } = useRownd();

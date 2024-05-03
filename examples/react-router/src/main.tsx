@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 
-import { RowndProvider } from '../../../src/index.tsx'
+import { RowndProvider } from '@rownd/react'
 import Router from './router/router.tsx'
 import { environment } from './environment.tsx'
 

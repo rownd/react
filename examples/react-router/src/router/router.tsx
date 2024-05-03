@@ -4,7 +4,7 @@ import Welcome from './welcome/Welcome.tsx';
 import Dashboard from './dashboard/Dashboard.tsx';
 import Header from './header/Header.tsx';
 
-import { RequireSignIn } from '../../../../src/index.tsx';
+import { RequireSignIn } from '@rownd/react';
 
 const Router: React.FC = () => {
   return (

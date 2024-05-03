@@ -1,6 +1,6 @@
 import React from 'react';
 import './Header.css';
-import { useRownd } from '../../../../../src';
+import { useRownd } from '@rownd/react';
 
 const Header: React.FC = () => {
   const { is_authenticated, auth_level, requestSignIn, signOut } = useRownd();
