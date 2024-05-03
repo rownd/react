@@ -109,6 +109,9 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
       redacted_fields: [],
       verified_data: {},
       meta: {},
+      instant_user: {
+        is_initializing: false,
+      }
     },
   });
 
@@ -156,6 +159,9 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
         },
         user: {
           ...state.user,
+          instant_user: {
+            is_initializing: Boolean(state.user?.instant_user?.is_initializing)
+          }
         },
       };
 
