@@ -1,5 +1,5 @@
 import './Welcome.css';
-import { useRownd } from '../../../../../src/index';
+import { useRownd } from '@rownd/react';
 import { Link } from 'react-router-dom';
 
 function Welcome() {
