@@ -4,7 +4,7 @@ import {
   RequireSignIn,
   SignedIn,
   useRownd,
-} from '../../src/context/index';
+} from '../../../src/context/index';
 import './App.css';
 
 const Initializing = () => (<h1>Initializing...</h1>)

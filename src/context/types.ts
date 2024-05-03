@@ -1,3 +1,5 @@
+type AuthLevel = 'instant' | 'guest' | 'unverified' | 'verified'
+
 export type TRowndContext = {
   requestSignIn: (e?: SignInProps) => void;
   signOut: () => void;
@@ -13,6 +15,7 @@ export type TRowndContext = {
   getAppConfig: () => any;
   is_authenticated: boolean;
   is_initializing: boolean;
+  auth_level?: AuthLevel;
   access_token: string | null;
   auth: AuthContext;
   user: UserContext;
@@ -43,6 +46,7 @@ type AuthContext = {
   app_id?: string;
   is_authenticated: boolean;
   is_verified_user?: boolean;
+  auth_level?: AuthLevel;
 };
 
 type UserContext = {
@@ -54,6 +58,9 @@ type UserContext = {
   };
   meta: {
     [key: string]: any | null;
+  };
+  instant_user?: {
+    is_initializing: boolean;
   };
 };
 
