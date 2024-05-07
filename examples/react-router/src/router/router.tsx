@@ -4,24 +4,13 @@ import Welcome from './welcome/Welcome.tsx';
 import Dashboard from './dashboard/Dashboard.tsx';
 import Header from './header/Header.tsx';
 
-import { RequireSignIn } from '@rownd/react';
-
 const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <Header />
       <Routes>
         <Route path="/" element={<Welcome />} />
-        <Route
-          path="/dashboard"
-          element={
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            <RequireSignIn>
-              <Dashboard />
-            </RequireSignIn>
-          }
-        />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   );
