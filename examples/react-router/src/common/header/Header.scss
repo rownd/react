@@ -20,12 +20,15 @@ header {
   box-sizing: border-box;
 
   .title {
-    font-size: $font-size_450;
-    font-weight: 700;
     display: flex;
     flex-direction: row;
     position: relative;
     align-items: center;
+    a {
+      font-size: $font-size_450;
+      font-weight: 700;
+      text-decoration: none;
+    }
 
     .pill {
       margin-left: 19px;
@@ -90,6 +93,9 @@ header {
 
     .title {
       font-size: $font-size_400;
+      a {
+        font-size: $font-size_400;
+      }
       .pill {
         display: none;
       }

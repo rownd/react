@@ -40,7 +40,7 @@ const Header: React.FC = () => {
     <>
       <header>
         <div className="title">
-          Rownd Router
+          <a href="/">Rownd Router</a>
           <Pill />
         </div>
         <div className="header__right">
