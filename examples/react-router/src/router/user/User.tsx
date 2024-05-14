@@ -49,7 +49,9 @@ const User: React.FC = () => {
       <div className="user__info">
         <div className="user__info__title">Ask or edit your name</div>
         <div className="user__info__subtitle">&nbsp;</div>
-        <button className="secondary">Edit name</button>
+        <button id="request-info" className="secondary">
+          Edit name
+        </button>
       </div>
 
       <div className="user__info">
