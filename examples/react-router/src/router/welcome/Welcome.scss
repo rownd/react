@@ -29,11 +29,12 @@
   .welcome__image {
     max-width: min(682px, 90%);
     min-width: 280px;
+    width: 100%;
+    height: 100%;
     height: fit-content;
     object-fit: contain;
-    position: relative;
-    display: flex;
-    margin: auto;
+    display: inline-block;
+    margin: 0px auto;
   }
 
   .welcome__cards {

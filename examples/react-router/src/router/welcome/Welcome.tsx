@@ -12,7 +12,7 @@ function Welcome() {
 
   return (
     <div className="welcome">
-        <Pill />
+      <Pill />
 
       <div className="welcome__title">Welcome to the instant experience</div>
       {!is_authenticated ||
@@ -21,7 +21,7 @@ function Welcome() {
             Sign in or sign up
           </button>
         ))}
-      <img className='welcome__image' src={WelcomeImg} />
+      <img className="welcome__image" src={WelcomeImg} />
       <div className="welcome__cards">
         <div className="welcome__card">
           <div className="welcome__card__title">Check out your profile</div>
