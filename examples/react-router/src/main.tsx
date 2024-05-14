@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.css'
+import './index.scss'
 
 import { RowndProvider } from '@rownd/react'
 import Router from './router/router.tsx'
