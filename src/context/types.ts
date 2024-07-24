@@ -1,4 +1,4 @@
-type AuthLevel = 'instant' | 'guest' | 'unverified' | 'verified'
+type AuthLevel = 'instant' | 'guest' | 'unverified' | 'verified';
 
 export type TRowndContext = {
   requestSignIn: (e?: SignInProps) => void;
@@ -19,6 +19,18 @@ export type TRowndContext = {
   access_token: string | null;
   auth: AuthContext;
   user: UserContext;
+  events: {
+    addEventListener: (
+      type: string,
+      callback: EventListenerOrEventListenerObject,
+      options?: boolean | AddEventListenerOptions | undefined
+    ) => void;
+    removeEventListener: (
+      type: string,
+      callback: EventListenerOrEventListenerObject | null,
+      options?: EventListenerOptions | boolean
+    ) => void;
+  };
 };
 
 export type SignInProps = {
