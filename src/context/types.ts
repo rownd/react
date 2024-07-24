@@ -74,6 +74,7 @@ type UserContext = {
   instant_user?: {
     is_initializing: boolean;
   };
+  is_loading: boolean;
 };
 
 type UserDataContext = {
