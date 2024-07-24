@@ -111,7 +111,8 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
       meta: {},
       instant_user: {
         is_initializing: false,
-      }
+      },
+      is_loading: false
     },
   });
 
@@ -161,7 +162,8 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
           ...state.user,
           instant_user: {
             is_initializing: Boolean(state.user?.instant_user?.is_initializing)
-          }
+          },
+          is_loading: Boolean(state.user.is_loading)
         },
       };
 
