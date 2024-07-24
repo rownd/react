@@ -163,7 +163,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
           instant_user: {
             is_initializing: Boolean(state.user?.instant_user?.is_initializing)
           },
-          is_loading: Boolean(state.is_loading_user_data)
+          is_loading: Boolean(state.user.is_loading)
         },
       };
 
