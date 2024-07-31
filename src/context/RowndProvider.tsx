@@ -85,6 +85,16 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     [callHubApi]
   );
 
+  const addEventListener = useCallback(
+    (...args: any[]) => callHubApi(['events', 'addEventListener'], ...args),
+    [callHubApi]
+  );
+
+  const removeEventListener = useCallback(
+    (...args: any[]) => callHubApi(['events', 'removeEventListener'], ...args),
+    [callHubApi]
+  );
+
   const getAppConfig = useCallback(() => callHubApi(['getAppConfig']), [callHubApi]);
 
   const [hubState, setHubState] = React.useState<TRowndContext>({
@@ -102,6 +112,10 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     auth: {
       access_token: null,
       is_authenticated: false,
+    },
+    events: {
+      addEventListener,
+      removeEventListener,
     },
     user: {
       data: {},
@@ -136,17 +150,8 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
 
   const hubListenerCb = useCallback(
     ({ state, api }: HubListenerProps) => {
-      const transformedState: TRowndContext = {
-        // functions
-        requestSignIn,
-        getAccessToken,
-        signOut,
-        manageAccount,
-        setUser,
-        setUserValue,
-        getFirebaseIdToken,
-        getAppConfig,
-        // data
+
+      setHubState((prev) => ({...prev, ...{
         is_initializing: state.is_initializing,
         is_authenticated: !!state.auth?.access_token,
         auth_level: state.auth.auth_level,
@@ -164,10 +169,8 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
             is_initializing: Boolean(state.user?.instant_user?.is_initializing)
           },
           is_loading: Boolean(state.user.is_loading)
-        },
-      };
-
-      setHubState(transformedState);
+        }
+      }}));
       hubApi.current = api;
 
       flushApiQueue();
