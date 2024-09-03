@@ -1,5 +1,7 @@
 type AuthLevel = 'instant' | 'guest' | 'unverified' | 'verified';
 
+export type TargetWindow = typeof window.parent | typeof window;
+
 export type TRowndContext = {
   requestSignIn: (e?: SignInProps) => void;
   signOut: () => void;
