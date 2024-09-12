@@ -78,7 +78,7 @@ type UserContext = {
 };
 
 type UserDataContext = {
-  id?: string;
+  user_id?: string;
   email?: string | null;
   phone?: string | null;
   [key: string]: any;
