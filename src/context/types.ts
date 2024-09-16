@@ -13,6 +13,7 @@ export type TRowndContext = {
   }) => Promise<string | undefined | null>;
   getFirebaseIdToken: (token: string) => Promise<string>;
   getAppConfig: () => any;
+  passkeys: { register: () => void; authenticate: () => void };
   is_authenticated: boolean;
   is_initializing: boolean;
   auth_level?: AuthLevel;

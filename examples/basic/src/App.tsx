@@ -7,7 +7,7 @@ import {
 } from '../../../src/context/index';
 import './App.css';
 
-const Initializing = () => (<h1>Initializing...</h1>)
+const Initializing = () => <h1>Initializing...</h1>;
 
 function App() {
   const { signOut, is_initializing } = useRownd();
@@ -15,7 +15,7 @@ function App() {
 
   if (template.current === '2') {
     if (is_initializing) {
-      return <Initializing />
+      return <Initializing />;
     }
 
     return (
@@ -33,9 +33,7 @@ function App() {
   }
 
   return (
-    <RequireSignIn
-      initializing={<Initializing />}
-    >
+    <RequireSignIn initializing={<Initializing />}>
       <h1>Rownd sample app</h1>
       <button onClick={() => signOut()}>Sign out</button>
     </RequireSignIn>

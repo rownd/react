@@ -37,7 +37,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
       const firstKey = fnNames[0];
       return selectHubApi(
         obj?.[firstKey],
-        fnNames?.filter(x => x !== firstKey)
+        fnNames?.filter((x) => x !== firstKey)
       );
     },
     []
@@ -95,13 +95,32 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     [callHubApi]
   );
 
-  const getAppConfig = useCallback(() => callHubApi(['getAppConfig']), [callHubApi]);
+  const getAppConfig = useCallback(
+    () => callHubApi(['getAppConfig']),
+    [callHubApi]
+  );
+
+  const registerPasskey = useCallback(
+    (...args: any[]) =>
+      callHubApi(['auth', 'passkeys', 'promptForPasskeyRegistration'], ...args),
+    [callHubApi]
+  );
+
+  const authenticatePasskey = useCallback(
+    (...args: any[]) =>
+      callHubApi(['auth', 'passkeys', 'authenticate'], ...args),
+    [callHubApi]
+  );
 
   const [hubState, setHubState] = React.useState<TRowndContext>({
     requestSignIn,
     getAccessToken,
     signOut,
     manageAccount,
+    passkeys: {
+      register: registerPasskey,
+      authenticate: authenticatePasskey,
+    },
     setUser,
     setUserValue,
     getFirebaseIdToken,
@@ -126,7 +145,7 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
       instant_user: {
         is_initializing: false,
       },
-      is_loading: false
+      is_loading: false,
     },
   });
 
@@ -150,27 +169,31 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
 
   const hubListenerCb = useCallback(
     ({ state, api }: HubListenerProps) => {
-
-      setHubState((prev) => ({...prev, ...{
-        is_initializing: state.is_initializing,
-        is_authenticated: !!state.auth?.access_token,
-        auth_level: state.auth.auth_level,
-        access_token: state.auth?.access_token || null,
-        auth: {
-          access_token: state.auth?.access_token,
-          app_id: state.auth?.app_id,
+      setHubState((prev) => ({
+        ...prev,
+        ...{
+          is_initializing: state.is_initializing,
           is_authenticated: !!state.auth?.access_token,
-          is_verified_user: state.auth?.is_verified_user,
           auth_level: state.auth.auth_level,
-        },
-        user: {
-          ...state.user,
-          instant_user: {
-            is_initializing: Boolean(state.user?.instant_user?.is_initializing)
+          access_token: state.auth?.access_token || null,
+          auth: {
+            access_token: state.auth?.access_token,
+            app_id: state.auth?.app_id,
+            is_authenticated: !!state.auth?.access_token,
+            is_verified_user: state.auth?.is_verified_user,
+            auth_level: state.auth.auth_level,
           },
-          is_loading: Boolean(state.user.is_loading)
-        }
-      }}));
+          user: {
+            ...state.user,
+            instant_user: {
+              is_initializing: Boolean(
+                state.user?.instant_user?.is_initializing
+              ),
+            },
+            is_loading: Boolean(state.user.is_loading),
+          },
+        },
+      }));
       hubApi.current = api;
 
       flushApiQueue();
@@ -182,6 +205,8 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
       signOut,
       getFirebaseIdToken,
       manageAccount,
+      registerPasskey,
+      authenticatePasskey,
       setUser,
       setUserValue,
     ]
