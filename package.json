@@ -8,8 +8,19 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
+    "dist-next/next",
     "src"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./next": {
+      "import": "./dist-next/next/src/index.js",
+      "types": "./dist-next/next/src/index.d.ts"
+    }
+  },
   "engines": {
     "node": ">=10"
   },
@@ -18,7 +29,7 @@
     "build": "vite build",
     "test": "vitest",
     "lint": "eslint src",
-    "prepare": "vite build",
+    "prepare": "vite build && cd src/next/ && npm run build",
     "release": "release-it",
     "size": "size-limit",
     "analyze": "size-limit --why"
