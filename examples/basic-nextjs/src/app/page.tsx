@@ -1,6 +1,6 @@
 'use client';
 
-import { useRownd } from '@rownd/react';
+import { useRownd } from '../../../../src';
 
 export default function Home() {
   const { requestSignIn, is_authenticated } = useRownd();

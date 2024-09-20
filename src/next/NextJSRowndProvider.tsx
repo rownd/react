@@ -1,16 +1,14 @@
 'use client';
 
-import React, { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
+import React, { ReactNode } from 'react';
 
-import { RowndProvider } from '../../context/RowndProvider';
-
-// const RowndProviderDynamic = dynamic(
-//   () => import('../../context/RowndProvider').then((mod) => mod.RowndProvider),
-//   {
-//     ssr: false,
-//   }
-// );
+const RowndProviderDynamic = dynamic(
+  () => import('../context/RowndProvider').then((mod) => mod.RowndProvider),
+  {
+    ssr: false,
+  }
+);
 
 interface NextJSRowndProviderProps {
   appKey: string;
@@ -26,13 +24,13 @@ function NextJSRowndProvider({
   hubUrlOverride,
 }: NextJSRowndProviderProps) {
   return (
-    <RowndProvider
+    <RowndProviderDynamic
       appKey={appKey}
       apiUrl={apiUrl}
       hubUrlOverride={hubUrlOverride}
     >
       {children}
-    </RowndProvider>
+    </RowndProviderDynamic>
   );
 }
 

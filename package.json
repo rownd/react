@@ -4,21 +4,20 @@
   "license": "MIT",
   "private": false,
   "type": "module",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "module": "dist/main.js",
+  "types": "dist/main.d.ts",
   "files": [
     "dist",
-    "dist-next/next",
     "src"
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/main.js",
+      "types": "./dist/main.d.ts"
     },
     "./next": {
-      "import": "./dist-next/next/src/index.js",
-      "types": "./dist-next/next/src/index.d.ts"
+      "import": "./dist/next.js",
+      "types": "./dist/next.d.ts"
     }
   },
   "engines": {
@@ -29,7 +28,7 @@
     "build": "vite build",
     "test": "vitest",
     "lint": "eslint src",
-    "prepare": "vite build && cd src/next/ && npm run build",
+    "prepare": "vite build",
     "release": "release-it",
     "size": "size-limit",
     "analyze": "size-limit --why"
@@ -80,8 +79,8 @@
     "happy-dom": "^13.3.8",
     "husky": "^7.0.4",
     "prop-types": "^15.8.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "release-it": "^17.1.1",
     "size-limit": "^7.0.8",
     "tslib": "^2.3.1",
@@ -99,5 +98,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rownd/react.git"
+  },
+  "dependencies": {
+    "next": "^14.2.13",
+    "rollup-preserve-directives": "^1.1.1"
   }
 }
