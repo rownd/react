@@ -47,8 +47,12 @@
   "author": "Matt Hamann",
   "size-limit": [
     {
-      "path": "dist/index.js",
-      "limit": "50 KB"
+      "path": "dist/main.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/next.js",
+      "limit": "10 KB"
     }
   ],
   "release-it": {
