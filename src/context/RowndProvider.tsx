@@ -20,6 +20,7 @@ interface RowndProviderProps {
   apiUrl?: string;
   rootOrigin?: string;
   hubUrlOverride?: string;
+  useIframeParent?: boolean;
   postRegistrationUrl?: string;
   children: React.ReactNode;
 }
