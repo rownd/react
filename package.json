@@ -4,12 +4,22 @@
   "license": "MIT",
   "private": false,
   "type": "module",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "module": "dist/main.js",
+  "types": "dist/main.d.ts",
   "files": [
     "dist",
     "src"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/main.js",
+      "types": "./dist/main.d.ts"
+    },
+    "./next": {
+      "import": "./dist/next.js",
+      "types": "./dist/next.d.ts"
+    }
+  },
   "engines": {
     "node": ">=10"
   },
@@ -37,7 +47,11 @@
   "author": "Matt Hamann",
   "size-limit": [
     {
-      "path": "dist/index.js",
+      "path": "dist/main.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/next.js",
       "limit": "10 KB"
     }
   ],
@@ -69,9 +83,10 @@
     "happy-dom": "^13.3.8",
     "husky": "^7.0.4",
     "prop-types": "^15.8.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "release-it": "^17.1.1",
+    "rollup-preserve-directives": "^1.1.1",
     "size-limit": "^7.0.8",
     "tslib": "^2.3.1",
     "typescript": "^4.9.5",
@@ -88,5 +103,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/rownd/react.git"
+  },
+  "dependencies": {
+    "next": "^14.2.13"
   }
 }
