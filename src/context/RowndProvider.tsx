@@ -1,12 +1,7 @@
 import React, { useContext, createContext, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
-
-import HubScriptInjector from './HubScriptInjector';
 import { TRowndContext } from './types';
-
-// Grab the URL hash ASAP in case it contains an `rph_init` param
-const locationHash =
-  typeof window !== 'undefined' ? window?.location?.hash : void 0;
+import { InternalRowndProvider } from './InternalProvider';
 
 const RowndContext = createContext<TRowndContext | undefined>(undefined);
 
@@ -15,7 +10,7 @@ export type HubListenerProps = {
   api: any;
 };
 
-interface RowndProviderProps {
+export type RowndProviderProps = {
   appKey: string;
   apiUrl?: string;
   rootOrigin?: string;
@@ -212,21 +207,12 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
     ]
   );
 
-  if (window?.localStorage.getItem('rph_log_level') === 'debug') {
-    console.debug('[debug] rph_txstate:', hubState);
-  }
-
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    <RowndContext.Provider value={hubState}>
-      <HubScriptInjector
-        stateListener={hubListenerCb}
-        locationHash={locationHash}
-        {...rest}
-      />
-      {children}
-    </RowndContext.Provider>
+    <InternalRowndProvider stateListener={hubListenerCb} {...rest}>
+      <RowndContext.Provider value={hubState}>      
+        {children}
+      </RowndContext.Provider>
+    </InternalRowndProvider>
   );
 }
 
