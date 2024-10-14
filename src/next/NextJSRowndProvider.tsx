@@ -3,10 +3,9 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { RowndProviderProps } from '../context/RowndProvider';
-import HubScriptInjector from '../context/HubScriptInjector';
 
-const RowndProviderDynamic = dynamic(
-  () => import('../context/RowndProvider').then((mod) => mod.RowndProvider),
+const ReactRowndProvider = dynamic(
+  () => import('../context/ReactRowndProvider').then((mod) => mod.ReactRowndProvider),
   {
     ssr: false,
   }
@@ -17,10 +16,9 @@ function NextJSRowndProvider({
   ...props
 }: RowndProviderProps) {
   return (
-    <RowndProviderDynamic {...props}>
-      <HubScriptInjector />
+    <ReactRowndProvider {...props}>
       {children}
-    </RowndProviderDynamic>
+    </ReactRowndProvider>
   );
 }
 
