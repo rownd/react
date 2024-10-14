@@ -12,6 +12,7 @@ export default defineConfig({
       entry: {
         main: resolve(__dirname, 'src/index.tsx'),
         next: resolve(__dirname, 'src/next/index.ts'),
+        remix: resolve(__dirname, 'src/remix/index.tsx')
       },
       // the proper extensions will be added
       fileName: 'rownd',

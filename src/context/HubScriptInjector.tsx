@@ -1,7 +1,6 @@
-// import React from 'react';
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { HubListenerProps } from './RowndProvider';
+import { useInternalRownd } from './InternalProvider';
 
 declare global {
   interface Window {
@@ -17,20 +16,20 @@ function setConfigValue(key: string, value: any) {
   window?._rphConfig.push([key, value]);
 }
 
-type HubScriptInjectorProps = {
+export type HubScriptInjectorProps = {
   appKey: string;
   stateListener: ({ state, api }: HubListenerProps) => void;
   hubUrlOverride?: string;
   locationHash?: string;
 };
 
-export default function HubScriptInjector({
-  appKey,
-  hubUrlOverride,
-  stateListener,
-  locationHash,
-  ...rest
-}: HubScriptInjectorProps) {
+// Grab the URL hash ASAP in case it contains an `rph_init` param
+const locationHash =
+  typeof window !== 'undefined' ? window?.location?.hash : void 0;
+
+export default function HubScriptInjector() {
+  const { appKey, hubUrlOverride, stateListener, ...rest } = useInternalRownd();
+
   useEffect(() => {
     if (!window) {
       return; // compat with server-side rendering
@@ -85,11 +84,3 @@ export default function HubScriptInjector({
 
   return null;
 }
-
-HubScriptInjector.propTypes = {
-  appKey: PropTypes.string.isRequired,
-  postLoginRedirect: PropTypes.string,
-  rootOrigin: PropTypes.string,
-  apiUrl: PropTypes.string,
-  externalComponent: PropTypes.object,
-};

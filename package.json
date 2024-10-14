@@ -18,6 +18,10 @@
     "./next": {
       "import": "./dist/next.js",
       "types": "./dist/next.d.ts"
+    },
+    "./remix": {
+      "import": "./dist/remix.js",
+      "types": "./dist/remix.d.ts"
     }
   },
   "engines": {
@@ -52,6 +56,10 @@
     },
     {
       "path": "dist/next.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/remix.js",
       "limit": "10 KB"
     }
   ],
