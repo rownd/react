@@ -12,7 +12,7 @@ const useRownd = (): TRowndContext => {
       signOut: async () => {
         // Handle cookie before clearing state
         try {
-          await setCookie('invalidate');
+          await setCookie('invalid');
         } catch (err) {
           console.log('Failed to set sign out cookie: ', err);
         }

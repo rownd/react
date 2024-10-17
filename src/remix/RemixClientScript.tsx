@@ -13,7 +13,7 @@ const RemixClientScript: React.FC = () => {
 
   const cookieSignOut = useCallback(async () => {
     try {
-      await setCookie('invalidate');
+      await setCookie('invalid');
     } catch (err) {
       console.log('Failed to sign out cookie: ', err);
     }
