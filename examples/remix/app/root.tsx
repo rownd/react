@@ -33,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <RemixRowndProvider appKey='key_nmdccn7goxjch5s0hoholrh9'>
+        <RemixRowndProvider appKey='YOUR_APP_KEY'>
           {children}
         </RemixRowndProvider>
         <ScrollRestoration />
