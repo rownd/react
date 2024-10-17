@@ -29,9 +29,7 @@ const withRowndRequireSignIn = <P extends object>(
       [getAccessToken]
     );
 
-    /* Trigger cookieSignIn when new accessToken is available.
-    *  - Reload the page after cookieSignIn if fallback screen is shown
-    */
+    // Trigger cookieSignIn when new accessToken is available.
     const prevAccessToken = useRef<string | null | undefined>(undefined);
     useEffect(() => {
       if (is_initializing || prevAccessToken.current === access_token) {
