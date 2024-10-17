@@ -3,7 +3,7 @@ import { useLoaderData, useNavigate } from '@remix-run/react';
 import {
   getRowndAuthenticationStatus,
   useRownd,
-  withRowndAuthenticated,
+  withRowndRequireSignIn,
 } from '../../../../../src/remix';
 
 type LoaderResponse = {
@@ -68,4 +68,4 @@ function Index() {
   );
 }
 
-export default withRowndAuthenticated(Index, useLoaderData);
+export default withRowndRequireSignIn(Index, useLoaderData);

@@ -1,7 +1,7 @@
 import { RemixRowndProvider } from './RemixRowndProvider';
 import { useRownd } from './useRownd';
 import RemixClientScript from './RemixClientScript';
-import withRowndAuthenticated from './withRowndAuthenticated';
+import withRowndRequireSignIn from './withRowndRequireSignIn';
 import {
   getRowndAuthenticationStatus,
   withRowndHandleRequest,
@@ -11,7 +11,7 @@ export {
   RemixRowndProvider,
   useRownd,
   RemixClientScript,
-  withRowndAuthenticated,
+  withRowndRequireSignIn,
   getRowndAuthenticationStatus,
   withRowndHandleRequest,
 };

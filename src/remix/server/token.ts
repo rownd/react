@@ -56,7 +56,7 @@ export const getRowndAuthenticationStatus = async (
     }
     return { userId, accessToken, authenticated: true };
   } catch (err) {
-    console.log('validate access token error: ', err);
+    console.log('getRowndAuthenticationStatus error: ', err);
     return { authenticated: false, userId: undefined, accessToken: undefined };
   }
 };

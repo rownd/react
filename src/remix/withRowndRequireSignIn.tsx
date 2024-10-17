@@ -3,7 +3,7 @@ import { useRownd } from './useRownd';
 import { RequireSignIn } from '../index';
 import { setCookie } from './server/cookie';
 
-const withRowndAuthenticated = <P extends object>(
+const withRowndRequireSignIn = <P extends object>(
   WrappedComponent: React.ComponentType<P>,
   useLoaderData: () => any,
   Fallback?: React.ComponentType
@@ -61,4 +61,4 @@ const withRowndAuthenticated = <P extends object>(
   };
 };
 
-export default withRowndAuthenticated;
+export default withRowndRequireSignIn;
