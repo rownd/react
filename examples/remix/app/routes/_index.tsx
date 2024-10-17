@@ -1,24 +1,32 @@
-import type { MetaFunction } from "@remix-run/node";
-import { useRownd } from "../../../../src/context";
+import type { MetaFunction } from '@remix-run/node';
+import { useNavigate } from '@remix-run/react';
+import { useRownd } from '../../../../src/remix';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: 'New Remix App' },
+    { name: 'description', content: 'Welcome to Remix!' },
   ];
 };
 
 export default function Index() {
-  const { requestSignIn, is_authenticated } = useRownd();
+  const { requestSignIn, is_authenticated, signOut, user } = useRownd();
+  const navigate = useNavigate();
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="flex flex-col items-center gap-16">
         <header className="flex flex-col items-center gap-9">
           <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
-            Welcome to <span className="sr-only">Remix</span>
-            <button onClick={() => requestSignIn()}>Sign in</button>
-            {is_authenticated && <h1>It works!</h1>}
+            Welcome!
           </h1>
+          {user.data.user_id && <h2>User ID: {user.data.user_id}</h2>}
+          <button
+            className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600'
+              onClick={() => (is_authenticated ? signOut() : requestSignIn())}
+            >
+              {is_authenticated ? 'Sign out' : 'Sign in'}
+            </button>
+          <button className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600' onClick={() => navigate('/profile')}>Go to profile</button>
           <div className="h-[144px] w-[434px]">
             <img
               src="/logo-light.png"
@@ -32,26 +40,6 @@ export default function Index() {
             />
           </div>
         </header>
-        <nav className="flex flex-col items-center justify-center gap-4 rounded-3xl border border-gray-200 p-6 dark:border-gray-700">
-          <p className="leading-6 text-gray-700 dark:text-gray-200">
-            What&apos;s next?
-          </p>
-          <ul>
-            {resources.map(({ href, text, icon }) => (
-              <li key={href}>
-                <a
-                  className="group flex items-center gap-3 self-stretch p-3 leading-normal text-blue-700 hover:underline dark:text-blue-500"
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {icon}
-                  {text}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
       </div>
     </div>
   );
@@ -59,8 +47,8 @@ export default function Index() {
 
 const resources = [
   {
-    href: "https://remix.run/start/quickstart",
-    text: "Quick Start (5 min)",
+    href: 'https://remix.run/start/quickstart',
+    text: 'Quick Start (5 min)',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -80,8 +68,8 @@ const resources = [
     ),
   },
   {
-    href: "https://remix.run/start/tutorial",
-    text: "Tutorial (30 min)",
+    href: 'https://remix.run/start/tutorial',
+    text: 'Tutorial (30 min)',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -101,8 +89,8 @@ const resources = [
     ),
   },
   {
-    href: "https://remix.run/docs",
-    text: "Remix Docs",
+    href: 'https://remix.run/docs',
+    text: 'Remix Docs',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -121,8 +109,8 @@ const resources = [
     ),
   },
   {
-    href: "https://rmx.as/discord",
-    text: "Join Discord",
+    href: 'https://rmx.as/discord',
+    text: 'Join Discord',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

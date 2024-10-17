@@ -8,7 +8,7 @@ import {
 import type { LinksFunction } from '@remix-run/node';
 
 import './tailwind.css';
-import { RemixRowndProvider } from '../../../src/remix/index';
+import { RemixRowndProvider } from '../../../src/remix';
 
 export const links: LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -33,7 +33,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <RemixRowndProvider appKey='123'>
+        <RemixRowndProvider appKey='YOUR_APP_KEY'>
           {children}
         </RemixRowndProvider>
         <ScrollRestoration />
