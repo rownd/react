@@ -1,9 +1,9 @@
-import type { LoaderFunction } from '@remix-run/node';
+import type { LoaderFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import {
-  getRowndAuthenticationStatus,
   useRownd,
   withRowndRequireSignIn,
+  withRowndLoader,
 } from '../../../../../src/remix';
 
 type LoaderResponse = {
@@ -12,16 +12,10 @@ type LoaderResponse = {
   profile: Record<string, any>;
 };
 
-export const loader: LoaderFunction = async ({
-  request,
-  context,
-}): Promise<LoaderResponse | { is_authenticated: boolean }> => {
-  const { access_token, is_authenticated, user_id } =
-    await getRowndAuthenticationStatus(request.headers.get('Cookie'));
-  
-  if (!is_authenticated) {
-    return { is_authenticated };
-  }
+export const loader = withRowndLoader(async function (
+  { context, request }: LoaderFunctionArgs,
+  { user_id, access_token }
+) {
 
   const profileRes = await fetch(
     `${process.env.ROWND_API_URL}/me/applications/395599692981862989/data`,
@@ -34,7 +28,7 @@ export const loader: LoaderFunction = async ({
   const profile = await profileRes.json();
 
   return { user_id, access_token, profile };
-};
+});
 
 function Index() {
   const navigate = useNavigate();
@@ -48,7 +42,7 @@ function Index() {
           <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
             My profile
           </h1>
-          <ul className='pl-32 list-disc'>
+          <ul className="pl-32 list-disc">
             {Object.entries(profile).map(([key, value]) => (
               <li key={key}>
                 {key}: {JSON.stringify(value)}
@@ -57,13 +51,23 @@ function Index() {
           </ul>
           {is_authenticated && <h1>User: {user.data.user_id}</h1>}
           <button
-            className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600'
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
             onClick={() => (is_authenticated ? signOut() : requestSignIn())}
           >
             {is_authenticated ? 'Sign out' : 'Sign in'}
           </button>
-          <button className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600' onClick={() => navigate('/books')}>Link to books</button>
-          <button className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600' onClick={() => navigate('/')}>Link to home</button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            onClick={() => navigate('/books')}
+          >
+            Link to books
+          </button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            onClick={() => navigate('/')}
+          >
+            Link to home
+          </button>
         </header>
       </div>
     </div>

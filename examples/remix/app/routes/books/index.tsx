@@ -1,8 +1,8 @@
-import type { LoaderFunction } from '@remix-run/node';
+import type { LoaderFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import {
-  getRowndAuthenticationStatus,
   useRownd,
+  withRowndLoader,
   withRowndRequireSignIn,
 } from '../../../../../src/remix';
 
@@ -17,20 +17,12 @@ type LoaderResponse = {
   }[];
 };
 
-export const loader: LoaderFunction = async ({
-  request,
-}): Promise<LoaderResponse | { is_authenticated: boolean }> => {
-  const { access_token, is_authenticated, user_id } =
-    await getRowndAuthenticationStatus(request.headers.get('Cookie'));
-  if (!is_authenticated) {
-    return { is_authenticated: false };
-  }
-
+export const loader: LoaderFunction = withRowndLoader(async ({ request }: LoaderFunctionArgs, { user_id, access_token }) => {
   const postsRes = await fetch('https://jsonplaceholder.typicode.com/posts');
   const posts = await postsRes.json();
 
   return { user_id, access_token, posts };
-};
+});
 
 function Index() {
   const navigate = useNavigate();
