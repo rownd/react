@@ -13,8 +13,8 @@ const withRowndRequireSignIn = <P extends object>(
     const data = useLoaderData();
 
     const isPropsFallbackEnabled = useMemo(
-      () => data?.authenticated === false,
-      [data?.authenticated]
+      () => data?.is_authenticated === false,
+      [data?.is_authenticated]
     );
 
     const cookieSignIn = useCallback(
