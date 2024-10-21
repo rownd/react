@@ -7,37 +7,39 @@ import {
 } from '../../../../../src/remix';
 
 type LoaderResponse = {
-  userId: string;
-  accessToken: string;
+  user_id: string;
+  access_token: string;
   profile: Record<string, any>;
 };
 
 export const loader: LoaderFunction = async ({
   request,
-}): Promise<LoaderResponse | { authenticated: boolean }> => {
-  const { accessToken, authenticated, userId } =
+  context,
+}): Promise<LoaderResponse | { is_authenticated: boolean }> => {
+  const { access_token, is_authenticated, user_id } =
     await getRowndAuthenticationStatus(request.headers.get('Cookie'));
-  if (!authenticated) {
-    return { authenticated };
+  
+  if (!is_authenticated) {
+    return { is_authenticated };
   }
 
   const profileRes = await fetch(
-    'https://api.rownd.io/me/applications/406650865825350227/data',
+    `${process.env.ROWND_API_URL}/me/applications/395599692981862989/data`,
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${access_token}`,
       },
     }
   );
   const profile = await profileRes.json();
 
-  return { userId, accessToken, profile };
+  return { user_id, access_token, profile };
 };
 
 function Index() {
   const navigate = useNavigate();
   const { is_authenticated, user, requestSignIn, signOut } = useRownd();
-  const { userId, accessToken, profile } = useLoaderData<LoaderResponse>();
+  const { profile } = useLoaderData<LoaderResponse>();
 
   return (
     <div className="flex h-screen items-center justify-center">

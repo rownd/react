@@ -7,8 +7,8 @@ import {
 } from '../../../../../src/remix';
 
 type LoaderResponse = {
-  userId: string;
-  accessToken: string;
+  user_id: string;
+  access_token: string;
   posts: {
     userId: number;
     id: number;
@@ -19,19 +19,17 @@ type LoaderResponse = {
 
 export const loader: LoaderFunction = async ({
   request,
-}): Promise<LoaderResponse | { authenticated: boolean }> => {
-  const { accessToken, authenticated, userId } =
+}): Promise<LoaderResponse | { is_authenticated: boolean }> => {
+  const { access_token, is_authenticated, user_id } =
     await getRowndAuthenticationStatus(request.headers.get('Cookie'));
-  if (!authenticated) {
-    return { authenticated };
+  if (!is_authenticated) {
+    return { is_authenticated: false };
   }
 
-  const postsRes = await fetch(
-    'https://jsonplaceholder.typicode.com/posts',
-  );
+  const postsRes = await fetch('https://jsonplaceholder.typicode.com/posts');
   const posts = await postsRes.json();
 
-  return { userId, accessToken, posts };
+  return { user_id, access_token, posts };
 };
 
 function Index() {
@@ -46,23 +44,35 @@ function Index() {
           <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
             My books
           </h1>
-          <div className='flex flex-col gap-1'>
-          {posts.filter((_, idx) => idx < 5).map((post) => (
-            <div className='flex flex-col p-2' key={post.id}>
-              <h2>{post.title}</h2>
-              <p>{post.body}</p>
-            </div>
-          ))}
+          <div className="flex flex-col gap-1">
+            {posts
+              .filter((_, idx) => idx < 5)
+              .map((post) => (
+                <div className="flex flex-col p-2" key={post.id}>
+                  <h2>{post.title}</h2>
+                  <p>{post.body}</p>
+                </div>
+              ))}
           </div>
           {is_authenticated && <h1>User: {user.data.user_id}</h1>}
           <button
-            className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600'
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
             onClick={() => (is_authenticated ? signOut() : requestSignIn())}
           >
             {is_authenticated ? 'Sign out' : 'Sign in'}
           </button>
-          <button className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600' onClick={() => navigate('/profile')}>Link to profile</button>
-          <button className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600' onClick={() => navigate('/')}>Link to home</button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            onClick={() => navigate('/profile')}
+          >
+            Link to profile
+          </button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            onClick={() => navigate('/')}
+          >
+            Link to home
+          </button>
         </header>
       </div>
     </div>
