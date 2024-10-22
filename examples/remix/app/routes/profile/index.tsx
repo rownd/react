@@ -1,43 +1,39 @@
-import type { LoaderFunction } from '@remix-run/node';
+import type { LoaderFunction, LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import {
-  getRowndAuthenticationStatus,
   useRownd,
   withRowndRequireSignIn,
+  withRowndLoader,
 } from '../../../../../src/remix';
 
 type LoaderResponse = {
-  userId: string;
-  accessToken: string;
+  user_id: string;
+  access_token: string;
   profile: Record<string, any>;
 };
 
-export const loader: LoaderFunction = async ({
-  request,
-}): Promise<LoaderResponse | { authenticated: boolean }> => {
-  const { accessToken, authenticated, userId } =
-    await getRowndAuthenticationStatus(request.headers.get('Cookie'));
-  if (!authenticated) {
-    return { authenticated };
-  }
+export const loader = withRowndLoader(async function (
+  { context, request }: LoaderFunctionArgs,
+  { user_id, access_token }
+) {
 
   const profileRes = await fetch(
-    'https://api.rownd.io/me/applications/406650865825350227/data',
+    `${process.env.ROWND_API_URL}/me/applications/395599692981862989/data`,
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${access_token}`,
       },
     }
   );
   const profile = await profileRes.json();
 
-  return { userId, accessToken, profile };
-};
+  return { user_id, access_token, profile };
+});
 
 function Index() {
   const navigate = useNavigate();
   const { is_authenticated, user, requestSignIn, signOut } = useRownd();
-  const { userId, accessToken, profile } = useLoaderData<LoaderResponse>();
+  const { profile } = useLoaderData<LoaderResponse>();
 
   return (
     <div className="flex h-screen items-center justify-center">
@@ -46,7 +42,7 @@ function Index() {
           <h1 className="leading text-2xl font-bold text-gray-800 dark:text-gray-100">
             My profile
           </h1>
-          <ul className='pl-32 list-disc'>
+          <ul className="pl-32 list-disc">
             {Object.entries(profile).map(([key, value]) => (
               <li key={key}>
                 {key}: {JSON.stringify(value)}
@@ -55,13 +51,23 @@ function Index() {
           </ul>
           {is_authenticated && <h1>User: {user.data.user_id}</h1>}
           <button
-            className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600'
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
             onClick={() => (is_authenticated ? signOut() : requestSignIn())}
           >
             {is_authenticated ? 'Sign out' : 'Sign in'}
           </button>
-          <button className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600' onClick={() => navigate('/books')}>Link to books</button>
-          <button className='bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600' onClick={() => navigate('/')}>Link to home</button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            onClick={() => navigate('/books')}
+          >
+            Link to books
+          </button>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            onClick={() => navigate('/')}
+          >
+            Link to home
+          </button>
         </header>
       </div>
     </div>

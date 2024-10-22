@@ -5,6 +5,7 @@ import withRowndRequireSignIn from './withRowndRequireSignIn';
 import {
   getRowndAuthenticationStatus,
   withRowndHandleRequest,
+  withRowndLoader,
 } from './server';
 
 export {
@@ -14,4 +15,5 @@ export {
   withRowndRequireSignIn,
   getRowndAuthenticationStatus,
   withRowndHandleRequest,
+  withRowndLoader,
 };

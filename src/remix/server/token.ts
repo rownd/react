@@ -1,23 +1,52 @@
 import * as jose from 'jose';
 import { rowndCookie } from './cookie';
 
-export type IsAuthenticatedResponse = {
-  userId: string;
-  accessToken: string;
-  authenticated: true;
-} | {
-  userId: undefined;
-  accessToken: undefined;
-  authenticated: false;
-};
+export type IsAuthenticatedResponse =
+  | {
+      user_id: string;
+      access_token: string;
+      is_authenticated: true;
+    }
+  | {
+      user_id: undefined;
+      access_token: undefined;
+      is_authenticated: false;
+    };
 
 const CLAIM_USER_ID = 'https://auth.rownd.io/app_user_id';
+
+const KEYSTORE_CACHE_TTL = 1800; // 30 minutes
+type Keystore = (
+  protectedHeader?: jose.JWSHeaderParameters,
+  token?: jose.FlattenedJWSInput
+) => Promise<jose.KeyLike>;
+let keystoreCache: undefined | { keystore: Keystore; expiresAt: number };
+
+const getKeystore = async (): Promise<Keystore> => {
+  let url: URL;
+  const defaultUrl = 'https://api.rownd.io';
+  try {
+    url = new URL(process.env.ROWND_API_URL ?? defaultUrl);
+  } catch {
+    url = new URL(defaultUrl);
+  }
+
+  const authConfigRes = await fetch(
+    `${url.origin}/hub/auth/.well-known/oauth-authorization-server`
+  );
+  const authConfig = await authConfigRes.json();
+
+  const jwksRes = await fetch(authConfig.jwks_uri);
+  const jwks = await jwksRes.json();
+
+  return jose.createLocalJWKSet(jwks);
+};
 
 const validateAccessToken = async (
   cookieHeader: string
 ): Promise<{
-    payload: jose.JWTPayload;
-    accessToken: string
+  payload: jose.JWTPayload;
+  accessToken: string;
 }> => {
   const cookie = rowndCookie.parse(cookieHeader);
   const accessToken = cookie?.accessToken;
@@ -25,22 +54,22 @@ const validateAccessToken = async (
     throw new Error('Cookie does not have accessToken');
   }
 
-  const authConfigRes = await fetch(
-    'https://api.rownd.io/hub/auth/.well-known/oauth-authorization-server'
-  );
-  const authConfig = await authConfigRes.json();
-
-  const jwksRes = await fetch(authConfig.jwks_uri);
-  const jwks = await jwksRes.json();
-
-  const keystore = jose.createLocalJWKSet(jwks);
+  let keystore: Keystore;
+  if (!keystoreCache || keystoreCache.expiresAt < Date.now()) {
+    keystore = await getKeystore();
+    keystoreCache = {
+      expiresAt: (Date.now() / 1000 + KEYSTORE_CACHE_TTL) * 1000,
+      keystore,
+    };
+  } else {
+    keystore = keystoreCache.keystore;
+  }
 
   return {
     payload: (await jose.jwtVerify(accessToken, keystore)).payload,
-    accessToken
+    accessToken,
   };
 };
-
 export const getRowndAuthenticationStatus = async (
   cookieHeader: string | null
 ): Promise<IsAuthenticatedResponse> => {
@@ -54,9 +83,17 @@ export const getRowndAuthenticationStatus = async (
     if (!userId) {
       throw new Error('Payload is missing user id claim');
     }
-    return { userId, accessToken, authenticated: true };
+    return {
+      user_id: userId,
+      access_token: accessToken,
+      is_authenticated: true,
+    };
   } catch (err) {
     console.log('getRowndAuthenticationStatus error: ', err);
-    return { authenticated: false, userId: undefined, accessToken: undefined };
+    return {
+      is_authenticated: false,
+      user_id: undefined,
+      access_token: undefined,
+    };
   }
 };

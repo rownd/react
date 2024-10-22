@@ -1,4 +1,5 @@
 import { getRowndAuthenticationStatus } from './token';
 import { withRowndHandleRequest } from './withRowndActionHandler';
+import { withRowndLoader } from './withRowndLoader';
 
-export { getRowndAuthenticationStatus, withRowndHandleRequest };
+export { getRowndAuthenticationStatus, withRowndHandleRequest, withRowndLoader };
