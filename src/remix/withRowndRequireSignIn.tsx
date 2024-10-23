@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRownd } from './useRownd';
 import { RequireSignIn } from '../index';
-import { setCookie } from './server/cookie';
+import useCookie from './hooks/useCookie';
 
 const withRowndRequireSignIn = <P extends object>(
   WrappedComponent: React.ComponentType<P>,
@@ -9,36 +9,15 @@ const withRowndRequireSignIn = <P extends object>(
   Fallback?: React.ComponentType
 ): React.FC<P> => {
   return (props: P) => {
-    const { access_token, getAccessToken, is_initializing } = useRownd();
+    const { access_token, is_initializing } = useRownd();
     const data = useLoaderData();
     const [signingOut, setSigningOut] = useState(false);
+    const { cookieSignIn, cookieSignOut } = useCookie();
 
     const isPropsFallbackEnabled = useMemo(
       () => data?.is_authenticated === false,
       [data?.is_authenticated]
     );
-
-    const cookieSignIn = useCallback(
-      async () => {
-        const token = await getAccessToken();
-        if (!token) {
-          return;
-        }
-        await setCookie(token);
-        window.location.reload();
-      },
-      [getAccessToken]
-    );
-
-    const cookieSignOut = useCallback(async () => {
-      try {
-        await setCookie('invalid');
-        window.location.reload();
-      } catch (err) {
-        console.log('Failed to sign out cookie: ', err);
-        setSigningOut(false);
-      }
-    }, []);
 
     // Trigger cookieSignIn when new accessToken is available.
     const prevAccessToken = useRef<string | null | undefined>(undefined);
@@ -50,14 +29,14 @@ const withRowndRequireSignIn = <P extends object>(
       prevAccessToken.current = access_token;
 
       if (access_token && isPropsFallbackEnabled) {
-        cookieSignIn();
+        cookieSignIn(() => window.location.reload());
         return;
       }
 
       // Handle sign out
       if (!access_token && !isPropsFallbackEnabled) {
         setSigningOut(true);
-        cookieSignOut();
+        cookieSignOut(() => window.location.reload());
       }
     }, [cookieSignIn, is_initializing, access_token, isPropsFallbackEnabled, cookieSignOut]);
 
