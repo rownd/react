@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRownd } from './useRownd';
 import { RequireSignIn } from '../index';
 import { setCookie } from './server/cookie';
@@ -11,6 +11,7 @@ const withRowndRequireSignIn = <P extends object>(
   return (props: P) => {
     const { access_token, getAccessToken, is_initializing } = useRownd();
     const data = useLoaderData();
+    const [signingOut, setSigningOut] = useState(false);
 
     const isPropsFallbackEnabled = useMemo(
       () => data?.is_authenticated === false,
@@ -29,6 +30,16 @@ const withRowndRequireSignIn = <P extends object>(
       [getAccessToken]
     );
 
+    const cookieSignOut = useCallback(async () => {
+      try {
+        await setCookie('invalid');
+        window.location.reload();
+      } catch (err) {
+        console.log('Failed to sign out cookie: ', err);
+        setSigningOut(false);
+      }
+    }, []);
+
     // Trigger cookieSignIn when new accessToken is available.
     const prevAccessToken = useRef<string | null | undefined>(undefined);
     useEffect(() => {
@@ -37,20 +48,39 @@ const withRowndRequireSignIn = <P extends object>(
       }
 
       prevAccessToken.current = access_token;
+
       if (access_token && isPropsFallbackEnabled) {
         cookieSignIn();
         return;
       }
-    }, [cookieSignIn, is_initializing, access_token, isPropsFallbackEnabled]);
+
+      // Handle sign out
+      if (!access_token && !isPropsFallbackEnabled) {
+        setSigningOut(true);
+        cookieSignOut();
+      }
+    }, [cookieSignIn, is_initializing, access_token, isPropsFallbackEnabled, cookieSignOut]);
+
+    const FallbackElement = useMemo(() => Fallback ? (
+      <Fallback />
+    ) : (
+      <>Provide a fallback</>
+    ), [Fallback]);
+
+    // This prevents the Hub sign in modal from being shown when the user is signing out.
+    const isRequireSignInDisabled = useMemo(() => {
+      return !isPropsFallbackEnabled && (Boolean(prevAccessToken.current) || signingOut);
+    }, [isPropsFallbackEnabled, prevAccessToken.current, signingOut]);
+
+    // If the user is signing out, show the fallback component.
+    if (signingOut) {
+      return FallbackElement;
+    }
 
     return (
-      <RequireSignIn>
+      <RequireSignIn disabled={isRequireSignInDisabled}>
         {isPropsFallbackEnabled ? (
-          Fallback ? (
-            <Fallback />
-          ) : (
-            <>Provide a fallback</>
-          )
+          FallbackElement
         ) : (
           <WrappedComponent {...(props as P)} />
         )}
