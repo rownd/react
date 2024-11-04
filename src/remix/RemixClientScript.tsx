@@ -1,23 +1,10 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRownd } from './useRownd';
-import { setCookie } from './server/cookie';
+import useCookie from './hooks/useCookie';
 
 const RemixClientScript: React.FC = () => {
-  const { access_token, is_initializing, getAccessToken } = useRownd();
-
-  const cookieSignIn = useCallback(async () => {
-    const token = await getAccessToken();
-    if (!token) return;
-    await setCookie(token);
-  }, [getAccessToken]);
-
-  const cookieSignOut = useCallback(async () => {
-    try {
-      await setCookie('invalid');
-    } catch (err) {
-      console.log('Failed to sign out cookie: ', err);
-    }
-  }, []);
+  const { access_token, is_initializing } = useRownd();
+  const { cookieSignIn, cookieSignOut } = useCookie();
 
   // Listen for access_token changes to determine when to sign(In/Out) cookies and state.
   const prevAccessToken = useRef<string | null | undefined>(undefined);
