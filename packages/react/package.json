@@ -6,6 +6,20 @@
   "files": [
     "*"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/main.js",
+      "types": "./dist/main.d.ts"
+    },
+    "./next": {
+      "import": "./dist/next.js",
+      "types": "./dist/next.d.ts"
+    },
+    "./remix": {
+      "import": "./dist/remix.js",
+      "types": "./dist/remix.d.ts"
+    }
+  },
   "license": "MIT",
   "private": false,
   "peerDependencies": {
