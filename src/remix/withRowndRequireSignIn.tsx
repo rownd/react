@@ -15,7 +15,7 @@ const withRowndRequireSignIn = <P extends object>(
     const { cookieSignIn, cookieSignOut } = useCookie();
 
     const isPropsFallbackEnabled = useMemo(
-      () => data?.is_authenticated === false,
+      () => data?.is_authenticated === false || data?.is_expired === true,
       [data?.is_authenticated]
     );
 

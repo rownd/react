@@ -23,7 +23,14 @@ export const withRowndLoader = (
       request.headers.get('Cookie')
     );
 
-    if (!status.is_authenticated) {
+    const isExpired = status.is_expired;
+    const isAuthenticated = status.is_authenticated;
+
+    if (isExpired) {
+      return { is_expired: true };
+    }
+
+    if (!isAuthenticated) {
       const onUnauthenticatedCallback = options?.onUnauthenticated;
       if (onUnauthenticatedCallback) {
         return onUnauthenticatedCallback(args);
