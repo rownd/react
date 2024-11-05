@@ -29,7 +29,8 @@
   },
   "scripts": {
     "start": "cd example && npm run dev",
-    "build": "vite build",
+    "build": "vite build && npm run prepare-packages",
+    "prepare-packages": "node scripts/prepare-packages.js",
     "test": "vitest",
     "lint": "eslint src",
     "prepare": "vite build",
@@ -68,9 +69,6 @@
       "commitMessage": "chore: release ${version}",
       "tagName": "v${version}"
     },
-    "npm": {
-      "publish": true
-    },
     "github": {
       "release": true
     },
@@ -78,6 +76,20 @@
       "@release-it/conventional-changelog": {
         "preset": "angular"
       }
+    },
+    "hooks": {
+      "before:init": [
+        "npm run build"
+      ],
+      "before:release": [
+        "node scripts/before-release.js",
+        "git add ."
+      ],
+      "after:release": [
+        "cd packages/react && npm publish --access public",
+        "cd packages/next && npm publish --access public",
+        "cd packages/remix && npm publish --access public"
+      ]
     }
   },
   "devDependencies": {

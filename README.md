@@ -43,6 +43,8 @@ The Rownd React SDK automatically injects the Rownd Hub snippet into your React 
 In the root `layout.tsx` of your app:
 
 ```jsx
+import { NextJSRowndProvider } from '@rownd/next';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -74,7 +76,7 @@ Later on within your app's components, you can use the Rownd hook to access the 
 
 ```jsx
 import React from 'react';
-import { useRownd } from '@rownd/react';
+import { useRownd } from '@rownd/next';
 
 export default function MyProtectedComponent(props) {
   const { is_authenticated, user, requestSignIn, is_initializing } = useRownd();
