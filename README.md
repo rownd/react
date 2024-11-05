@@ -1,4 +1,6 @@
-# React / Next.js
+#### README's for [Next](/rownd/react/blob/main/packages/next/README.md) and [Remix](/rownd/react/blob/main/packages/remix/README.md).
+
+# React
 
 ## Installation
 

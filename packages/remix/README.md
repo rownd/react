@@ -1,3 +1,5 @@
+# Remix
+
 ### Installation
 
 Simply run `npm install @rownd/remix` or `yarn add @rownd/remix`.
@@ -110,5 +112,5 @@ export default withRowndRequireSignIn(Index, useLoaderData, Fallback);
 
 ### API reference
 
-Please see the [React SDK](https://docs.rownd.io/sdk-reference/web/react---next-js#api-reference) for details on
+Please see the [React SDK](/rownd/react/blob/main?tab=readme-ov-file#api-reference) for details on
 Rownd Client React API's.
