@@ -6,11 +6,13 @@ export type IsAuthenticatedResponse =
       user_id: string;
       access_token: string;
       is_authenticated: true;
+      is_expired: false;
     }
   | {
       user_id: undefined;
       access_token: undefined;
       is_authenticated: false;
+      is_expired: boolean;
     };
 
 const CLAIM_USER_ID = 'https://auth.rownd.io/app_user_id';
@@ -70,6 +72,7 @@ const validateAccessToken = async (
     accessToken,
   };
 };
+
 export const getRowndAuthenticationStatus = async (
   cookieHeader: string | null
 ): Promise<IsAuthenticatedResponse> => {
@@ -87,13 +90,21 @@ export const getRowndAuthenticationStatus = async (
       user_id: userId,
       access_token: accessToken,
       is_authenticated: true,
+      is_expired: false,
     };
   } catch (err) {
-    console.log('getRowndAuthenticationStatus error: ', err);
+    console.log('validateAccessToken error:', err);
+    let isExpired = false;
+
+    if (err instanceof jose.errors.JWTExpired) {
+      isExpired = true;
+    }
+
     return {
-      is_authenticated: false,
       user_id: undefined,
       access_token: undefined,
+      is_authenticated: false,
+      is_expired: isExpired,
     };
   }
 };

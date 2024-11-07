@@ -11,7 +11,13 @@ import type { LinksFunction } from '@remix-run/node';
 import './tailwind.css';
 import { RemixRowndProvider } from '../../../src/remix';
 
-export const loader = async (): Promise<{ env: { ROWND_APP_KEY: string | undefined; ROWND_API_URL: string | undefined; ROWND_HUB_URL: string | undefined } }> => {
+export const loader = async (): Promise<{
+  env: {
+    ROWND_APP_KEY: string | undefined;
+    ROWND_API_URL: string | undefined;
+    ROWND_HUB_URL: string | undefined;
+  };
+}> => {
   return {
     env: {
       ROWND_APP_KEY: process.env.ROWND_APP_KEY,
@@ -45,7 +51,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <RemixRowndProvider appKey={env.ROWND_APP_KEY ?? ''} apiUrl={env.ROWND_API_URL} hubUrlOverride={env.ROWND_HUB_URL}>
+        <RemixRowndProvider
+          postSignOutRedirect="/"
+          appKey={env.ROWND_APP_KEY ?? ''}
+          apiUrl={env.ROWND_API_URL}
+          hubUrlOverride={env.ROWND_HUB_URL}
+        >
           {children}
         </RemixRowndProvider>
         <ScrollRestoration />

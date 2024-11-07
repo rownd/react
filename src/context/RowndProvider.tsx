@@ -16,6 +16,7 @@ export type RowndProviderProps = {
   rootOrigin?: string;
   hubUrlOverride?: string;
   postRegistrationUrl?: string;
+  postSignOutRedirect?: string;
   children: React.ReactNode;
 }
 

@@ -1,5 +1,5 @@
 import type { LoaderFunction, LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData, useNavigate } from '@remix-run/react';
+import { redirect, useLoaderData, useNavigate } from '@remix-run/react';
 import {
   useRownd,
   withRowndLoader,
@@ -22,7 +22,13 @@ export const loader: LoaderFunction = withRowndLoader(async ({ request }: Loader
   const posts = await postsRes.json();
 
   return { user_id, access_token, posts };
-});
+  },
+  {
+    onUnauthenticated: ({ request, context }: LoaderFunctionArgs) => {
+      return redirect('/');
+    },
+  }
+);
 
 function Index() {
   const navigate = useNavigate();
