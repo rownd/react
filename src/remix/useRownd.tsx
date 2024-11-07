@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { TRowndContext } from '../context/types';
 import { useRownd as useRowndDefault } from '../index';
-import { setCookie } from './server/cookie';
+import { setCookie } from '../ssr/server/cookie';
 
 const useRownd = (): TRowndContext => {
   const rowndDefault = useRowndDefault();

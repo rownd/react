@@ -1,4 +1,4 @@
-import { NextJSRowndProvider } from './NextJSRowndProvider';
-import { useRownd } from './useRownd';
+import { RowndProvider } from './RowndProvider';
+import { useRownd } from './client/useRownd';
 
-export { NextJSRowndProvider, useRownd };
+export { RowndProvider, useRownd };

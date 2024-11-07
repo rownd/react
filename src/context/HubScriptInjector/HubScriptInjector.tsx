@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import { HubListenerProps } from './RowndProvider';
-import { useInternalRownd } from './InternalProvider';
+import { HubListenerProps } from '../RowndProvider';
 
 declare global {
   interface Window {
@@ -27,8 +26,12 @@ export type HubScriptInjectorProps = {
 const locationHash =
   typeof window !== 'undefined' ? window?.location?.hash : void 0;
 
-export default function HubScriptInjector() {
-  const { appKey, hubUrlOverride, stateListener, ...rest } = useInternalRownd();
+export default function HubScriptInjector({
+  appKey,
+  hubUrlOverride,
+  stateListener,
+  ...rest
+}: HubScriptInjectorProps) {
 
   useEffect(() => {
     if (!window) {

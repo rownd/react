@@ -1,4 +1,4 @@
-import { getRowndAuthenticationStatus } from './token';
+import { getRowndAuthenticationStatus } from '../../ssr/server/token';
 
 type LoaderFunctionArgs = {
   request: Record<string, any>;

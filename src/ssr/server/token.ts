@@ -1,5 +1,10 @@
 import * as jose from 'jose';
-import { rowndCookie } from './cookie';
+import { rowndCookie, RowndCookieData } from './cookie';
+
+export type RowndAuthenticatedUser = {
+  user_id: string;
+  access_token: string;
+}
 
 export type IsAuthenticatedResponse =
   | {
@@ -26,7 +31,7 @@ let keystoreCache: undefined | { keystore: Keystore; expiresAt: number };
 
 const getKeystore = async (): Promise<Keystore> => {
   let url: URL;
-  const defaultUrl = 'https://api.rownd.io';
+  const defaultUrl = 'https://api.dev.rownd.io';
   try {
     url = new URL(process.env.ROWND_API_URL ?? defaultUrl);
   } catch {
@@ -45,13 +50,12 @@ const getKeystore = async (): Promise<Keystore> => {
 };
 
 const validateAccessToken = async (
-  cookieHeader: string
+  accessToken?: string
 ): Promise<{
   payload: jose.JWTPayload;
   accessToken: string;
 }> => {
-  const cookie = rowndCookie.parse(cookieHeader);
-  const accessToken = cookie?.accessToken;
+
   if (!accessToken) {
     throw new Error('Cookie does not have accessToken');
   }
@@ -73,14 +77,41 @@ const validateAccessToken = async (
   };
 };
 
+const determineAccessTokenFromCookie = (cookie: string): string | undefined => {
+
+  let cookieData: RowndCookieData | undefined
+
+  // First, try to parse as JSON
+  try {
+    const parsedCookie = JSON.parse(cookie);
+    if (parsedCookie.accessToken) {
+      cookieData = parsedCookie
+    }
+  } catch {}
+
+  // If that fails, try to parse as a cookie string
+  if (!cookieData) {
+    cookieData = rowndCookie.parse(cookie);
+  }
+
+  return cookieData?.accessToken
+}
+
 export const getRowndAuthenticationStatus = async (
-  cookieHeader: string | null
+  cookie: string | null
 ): Promise<IsAuthenticatedResponse> => {
   try {
-    if (!cookieHeader) {
-      throw new Error('Cookie header is null');
+    if (!cookie) {
+      throw new Error('Cookie is null');
     }
-    const { payload, accessToken } = await validateAccessToken(cookieHeader);
+
+    const unverifiedAccessToken = determineAccessTokenFromCookie(cookie);
+
+    if (!unverifiedAccessToken) {
+      throw new Error('Cookie is missing access token');
+    }
+
+    const { payload, accessToken } = await validateAccessToken(unverifiedAccessToken);
     const userId = payload?.[CLAIM_USER_ID] as string | undefined;
 
     if (!userId) {
@@ -93,7 +124,11 @@ export const getRowndAuthenticationStatus = async (
       is_expired: false,
     };
   } catch (err) {
-    console.log('validateAccessToken error:', err);
+    if (err instanceof Error) {
+      console.log('validateAccessToken failed:', err.message);
+    } else {
+      console.log('validateAccessToken failed:', err);
+    }
     let isExpired = false;
 
     if (err instanceof jose.errors.JWTExpired) {
@@ -101,9 +136,9 @@ export const getRowndAuthenticationStatus = async (
     }
 
     return {
+      is_authenticated: false,
       user_id: undefined,
       access_token: undefined,
-      is_authenticated: false,
       is_expired: isExpired,
     };
   }

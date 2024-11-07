@@ -1,13 +1,13 @@
 import React, { lazy, Suspense } from 'react';
 import { RowndProvider, RowndProviderProps } from '../context/RowndProvider';
-const HubScriptInjector = lazy(() => import('../context/HubScriptInjector'));
+const InternalProviderHubScriptInjector = lazy(() => import('../context/HubScriptInjector/InternalProviderHubScriptInjector'));
 const RemixClientScript = lazy(() => import('./RemixClientScript'));
 
 function RemixRowndProvider({ children, ...props }: RowndProviderProps) {
   return (
     <RowndProvider {...props}>
       <Suspense fallback={null}>
-        <HubScriptInjector />
+        <InternalProviderHubScriptInjector />
         <RemixClientScript />
       </Suspense>
       {children}

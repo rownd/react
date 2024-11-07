@@ -62,7 +62,7 @@ type AuthContext = {
   auth_level?: AuthLevel;
 };
 
-type UserContext = {
+export type UserContext = {
   data: UserDataContext;
   groups: UserGroup[];
   redacted_fields: string[];

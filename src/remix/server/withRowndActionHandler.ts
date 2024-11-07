@@ -1,4 +1,4 @@
-import { ROWND_TOKEN_CALLBACK_PATH, rowndCookie } from "./cookie";
+import { ROWND_TOKEN_CALLBACK_PATH, rowndCookie } from "../../ssr/server/cookie";
 
 export function withRowndHandleRequest(
   handleRequest: (
@@ -31,7 +31,7 @@ export function withRowndHandleRequest(
   };
 }
 
-async function handleRowndTokenCallback(request: Request) {
+export async function handleRowndTokenCallback(request: Request) {
   const body = request.body;
   try {
     const text = await new Response(body).text();
@@ -51,6 +51,6 @@ async function handleRowndTokenCallback(request: Request) {
     });
   } catch (err) {
     console.error('Failed to decode body text', err);
-    return 'Failed';
+    return new Response('Failed', { status: 400 });
   }
 }
