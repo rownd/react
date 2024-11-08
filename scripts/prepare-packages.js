@@ -8,8 +8,8 @@ async function copyPackageFiles() {
     // Create package directory if it doesn't exist
     await mkdir(`packages/${pkg}/dist`, { recursive: true });
 
-    // Copy parent README.md for React and Next. TODO: Add individual README.md for Next
-    if (['react', 'next'].includes(pkg)) {
+    // Copy parent README.md for React.
+    if (['react'].includes(pkg)) {
       await cp(
         join('README.md'),
         join('packages', pkg, 'README.md')
