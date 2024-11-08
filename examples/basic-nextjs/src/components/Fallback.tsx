@@ -7,14 +7,13 @@ export default function Fallback() {
 
   return (
     <div>
-      <h1>Fallback component</h1>
+      <h1 className="text-2xl font-bold">Fallback component</h1>
       {is_authenticated ? (
         <>
-          <h1>Profile {user.data.user_id && user.data.user_id}</h1>
-          <button onClick={() => signOut()}>Sign Out</button>
+          <button className="bg-gray-800 text-gray-100 p-2 rounded-md" onClick={() => signOut()}>Sign Out</button>
         </>
       ) : (
-        <button onClick={() => requestSignIn()}>Sign In</button>
+        <button className="bg-gray-800 text-gray-100 p-2 rounded-md" onClick={() => requestSignIn()}>Sign In</button>
       )}
     </div>
   );

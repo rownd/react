@@ -42,7 +42,7 @@ const withRowndAuth = <P extends object>(
     return (
       <>
         {/* @ts-ignore */}
-        <Component {...props} rowndUser={user}  />
+        <Component {...props} user={user}  />
         {/* @ts-ignore */}
         <RequireSignIn isFallback={false} />
       </>
