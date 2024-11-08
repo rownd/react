@@ -6,7 +6,7 @@ import RequireSignIn from '../client/components/RequireSignIn';
 
 type ReactServerComponent<Props = {}> = (props: Props) => React.ReactNode;
 
-const withRowndAuth = <P extends object>(
+const withRowndRequireSignIn = <P extends object>(
   WrappedComponent: ReactServerComponent<P>,
   Fallback: React.ComponentType,
   options: {
@@ -19,7 +19,7 @@ const withRowndAuth = <P extends object>(
     const status = await getRowndAuthenticationStatus(rowndToken);
 
     if (!status.is_authenticated) {
-      if (options.onUnauthenticated) {
+      if (options.onUnauthenticated && !status.is_expired) {
         options.onUnauthenticated();
       }
       return (
@@ -50,4 +50,4 @@ const withRowndAuth = <P extends object>(
   };
 };
 
-export default withRowndAuth;
+export default withRowndRequireSignIn;

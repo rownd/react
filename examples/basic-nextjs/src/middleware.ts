@@ -9,6 +9,6 @@ export const middleware = withRowndMiddleware((request: NextRequest) => {
 export const config = {
   matcher: [
     // Match API routes
-    '/:path*'
+    '/api/rownd-token-callback',
   ],
 };

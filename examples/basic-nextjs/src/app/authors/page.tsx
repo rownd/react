@@ -1,5 +1,5 @@
 import Fallback from '@/components/Fallback';
-import withRowndAuth from '../../../../../src/next/server/withRowndAuth';
+import withRowndRequireSignIn from '../../../../../src/next/server/withRowndRequireSignIn';
 import Link from 'next/link';
 import { getRowndUser } from '../../../../../src/next/server/getRowndUser';
 
@@ -31,8 +31,8 @@ const Authors = async () => {
   );
 }
 
-export default withRowndAuth(Authors, Fallback, {
+export default withRowndRequireSignIn(Authors, Fallback, {
   onUnauthenticated: () => {
-    console.log('Unauthenticated');
+    // Handle unauthenticated flow
   },
 });
