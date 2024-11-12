@@ -80,7 +80,9 @@ the `withRowndRequireSignIn` higher-order component.
 import {
   withRowndRequireSignIn,
   getRowndUser,
+  isAuthenticated,
 } from '@rownd/next';
+import { cookies } from 'next/headers';
 
 async function ProtectedPage() {
   const user = await getRowndUser();
