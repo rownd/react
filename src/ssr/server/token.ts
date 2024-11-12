@@ -31,7 +31,7 @@ let keystoreCache: undefined | { keystore: Keystore; expiresAt: number };
 
 const getKeystore = async (): Promise<Keystore> => {
   let url: URL;
-  const defaultUrl = 'https://api.dev.rownd.io';
+  const defaultUrl = 'https://api.rownd.io';
   try {
     url = new URL(process.env.ROWND_API_URL ?? defaultUrl);
   } catch {
@@ -87,7 +87,9 @@ const determineAccessTokenFromCookie = (cookie: string): string | undefined => {
     if (parsedCookie.accessToken) {
       cookieData = parsedCookie
     }
-  } catch {}
+  } catch {
+    // Do nothing
+  }
 
   // If that fails, try to parse as a cookie string
   if (!cookieData) {

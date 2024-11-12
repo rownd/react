@@ -4,7 +4,7 @@
 import { useRownd } from '@rownd/next';
 
 export default function Fallback() {
-  const { user, requestSignIn, is_authenticated, signOut, is_initializing, auth } = useRownd();
+  const { requestSignIn, is_authenticated, signOut } = useRownd();
 
   return (
     <div>

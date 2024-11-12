@@ -7,7 +7,6 @@ type InternalRowndProvider = HubScriptInjectorProps & { children: React.ReactNod
 
 export const InternalRowndProvider = ({ children, ...rest }: InternalRowndProvider) => {
   return (
-    // @ts-ignore
     <InternalRowndContext.Provider value={rest}>      
       {children}
     </InternalRowndContext.Provider>

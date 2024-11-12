@@ -25,7 +25,6 @@ const withRowndRequireSignIn = <P extends object>(
       return (
         <>
           <RequireSignIn isFallback={true} />
-          {/* @ts-ignore */}
           <Fallback />
         </>
       );
@@ -36,14 +35,10 @@ const withRowndRequireSignIn = <P extends object>(
         user_id: status.user_id,
     };
 
-
-    // @ts-ignore
     const Component = WrappedComponent as unknown as React.ComponentType<P>;
     return (
       <>
-        {/* @ts-ignore */}
-        <Component {...props} user={user}  />
-        {/* @ts-ignore */}
+        <Component {...props} user={user} />
         <RequireSignIn isFallback={false} />
       </>
     );

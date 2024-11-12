@@ -35,7 +35,6 @@ function RowndProvider({ children, ...rest }: RowndProviderProps) {
       }
       {...rest}
     >
-      {/* @ts-ignore */}
       <RowndContext.Provider value={hubState}>{children}</RowndContext.Provider>
     </InternalRowndProvider>
   );

@@ -6,8 +6,8 @@ import { withRowndRequireSignIn } from '@rownd/next';
 import { cookies } from 'next/headers';
 
 async function Authors() {
-  let data = await fetch('https://jsonplaceholder.typicode.com/posts');
-  let posts: { id: number; title: string; body: string }[] = await data.json();
+  const data = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts: { id: number; title: string; body: string }[] = await data.json();
   const user = await getRowndUser(cookies);
 
   console.log({ user });
@@ -16,6 +16,7 @@ async function Authors() {
     <div className="flex justify-center flex-col w-50 ">
       <h1 className="text-2xl font-bold">Authors</h1>
       <h3>User ID: {user?.user_id}</h3>
+      <Fallback />
       <ul className="flex flex-col list-disc">
       {posts
         .filter((_, idx) => idx < 5)

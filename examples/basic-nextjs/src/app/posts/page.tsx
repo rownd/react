@@ -33,8 +33,8 @@
 // };
 
 export default async function Posts() {
-  let data = await fetch('https://jsonplaceholder.typicode.com/posts');
-  let posts: { id: number; title: string; body: string }[] = await data.json();
+  const data = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts: { id: number; title: string; body: string }[] = await data.json();
 
   return (
     <div className="flex justify-center flex-col w-50 ">

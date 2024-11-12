@@ -60,4 +60,4 @@ export const setCookie = async (token: string): Promise<string | undefined> => {
   }
 };
 
-export const rowndCookie = createCookie('rownd-session');
+export const rowndCookie = createCookie(ROWND_COOKIE_ID);
