@@ -1,6 +1,6 @@
 {
   "name": "@rownd/next",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "type": "module",
   "module": "dist/next.js",
   "types": "dist/next.d.ts",
