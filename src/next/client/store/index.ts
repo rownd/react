@@ -1,20 +1,25 @@
-import { TRowndContext, UserContext } from "../../../context/types";
+import { TRowndContext } from "../../../context/types";
 import { createStore } from "./store";
+
+const notInitialized = () => {
+  console.log('Rownd context/provider not initialized yet.');
+  return Promise.resolve(null as any);
+};
 
 export const store = createStore<TRowndContext>(
   {
     requestSignIn: () => {},
-    getAccessToken: () => Promise.resolve(''),
+    getAccessToken: () => notInitialized(),
     signOut: () => {},
     manageAccount: () => {},
     passkeys: {
       register: () => {},
       authenticate: () => {},
     },
-    setUser: () => Promise.resolve({} as UserContext),
-    setUserValue: () => Promise.resolve({} as UserContext),
-    getFirebaseIdToken: () => Promise.resolve(''),
-    getAppConfig: () => {},
+    setUser: () => notInitialized(),
+    setUserValue: () => notInitialized(),
+    getFirebaseIdToken: () => notInitialized(),
+    getAppConfig: () => notInitialized(),
     is_initializing: true,
     is_authenticated: false,
     access_token: null,

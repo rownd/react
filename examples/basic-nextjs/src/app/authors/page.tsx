@@ -1,22 +1,21 @@
 import Fallback from '@/components/Fallback';
-import withRowndRequireSignIn from '../../../../../src/next/server/withRowndRequireSignIn';
-import Link from 'next/link';
-import { getRowndUser } from '../../../../../src/next/server/getRowndUser';
+// import { getRowndUser } from '@rownd/next/server';
+// import { withRowndRequireSignIn } from '@rownd/next';
+import { getRowndUser } from '@rownd/next/server';
+import { withRowndRequireSignIn } from '@rownd/next';
+import { cookies } from 'next/headers';
 
-const Authors = async () => {
+async function Authors() {
   let data = await fetch('https://jsonplaceholder.typicode.com/posts');
   let posts: { id: number; title: string; body: string }[] = await data.json();
+  const user = await getRowndUser(cookies);
 
-  const user = await getRowndUser();
+  console.log({ user });
 
   return (
     <div className="flex justify-center flex-col w-50 ">
       <h1 className="text-2xl font-bold">Authors</h1>
       <h3>User ID: {user?.user_id}</h3>
-      <Link className="text-underline text-sm text-gray-100 hover:text-gray-200" prefetch={true} href="/">
-        Take me home
-      </Link>
-      <Fallback />
       <ul className="flex flex-col list-disc">
       {posts
         .filter((_, idx) => idx < 5)
@@ -31,7 +30,7 @@ const Authors = async () => {
   );
 }
 
-export default withRowndRequireSignIn(Authors, Fallback, {
+export default withRowndRequireSignIn(Authors, cookies, Fallback, {
   onUnauthenticated: () => {
     // Handle unauthenticated flow
   },

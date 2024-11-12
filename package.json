@@ -19,6 +19,10 @@
       "import": "./dist/next.js",
       "types": "./dist/next.d.ts"
     },
+    "./next/server": {
+      "import": "./dist/next/server.js",
+      "types": "./dist/next/server.d.ts"
+    },
     "./remix": {
       "import": "./dist/remix.js",
       "types": "./dist/remix.d.ts"
@@ -125,7 +129,6 @@
     "url": "https://github.com/rownd/react.git"
   },
   "dependencies": {
-    "jose": "^5.9.4",
-    "next": "^14.2.13"
+    "jose": "^5.9.4"
   }
 }

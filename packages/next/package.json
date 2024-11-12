@@ -7,6 +7,16 @@
   "files": [
     "*"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/next.js",
+      "types": "./dist/next.d.ts"
+    },
+    "./server": {
+      "import": "./dist/next-server.js",
+      "types": "./dist/next-server.d.ts"
+    }
+  },
   "license": "MIT",
   "private": false,
   "peerDependencies": {
@@ -18,6 +28,6 @@
     "url": "https://github.com/rownd/react.git"
   },
   "dependencies": {
-    "next": "^14.2.13"
+    "jose": "^5.9.4"
   }
 }

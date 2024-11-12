@@ -1,6 +1,7 @@
 'use client';
 
-import { useRownd } from '../../../../src/next/client/useRownd';
+// import { useRownd } from '@rownd/next';
+import { useRownd } from '@rownd/next';
 
 export default function Fallback() {
   const { user, requestSignIn, is_authenticated, signOut, is_initializing, auth } = useRownd();

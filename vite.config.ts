@@ -12,17 +12,19 @@ export default defineConfig({
       entry: {
         main: resolve(__dirname, 'src/index.tsx'),
         next: resolve(__dirname, 'src/next/index.ts'),
-        remix: resolve(__dirname, 'src/remix/index.tsx')
+        'next-server': resolve(__dirname, 'src/next/server/index.ts'),
+        remix: resolve(__dirname, 'src/remix/index.tsx'),
       },
       // the proper extensions will be added
       fileName: 'rownd',
       formats: ['es'],
     },
     rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
       external: ['react', 'react/jsx-runtime', 'next'],
       output: {
+        // Preserve directory structure
+        preserveModules: true,
+        preserveModulesRoot: 'src',
         assetFileNames: 'assets/[name][extname]',
         entryFileNames: '[name].js',
       },

@@ -1,21 +1,21 @@
 import React from 'react';
-import { cookies } from 'next/headers';
 import { getRowndAuthenticationStatus, RowndAuthenticatedUser } from '../../ssr/server/token';
 import { ROWND_COOKIE_ID } from '../../ssr/server/cookie';
-import RequireSignIn from '../client/components/RequireSignIn';
+import RequireSignIn from './components/RequireSignIn';
+import { ReadOnlyRequestCookies } from '../server/getRowndUser';
 
 type ReactServerComponent<Props = {}> = (props: Props) => React.ReactNode;
 
 const withRowndRequireSignIn = <P extends object>(
   WrappedComponent: ReactServerComponent<P>,
+  cookies: () => ReadOnlyRequestCookies,
   Fallback: React.ComponentType,
   options: {
     onUnauthenticated?: () => void;
   } = {}
 ) => {
   return async (props: P) => {
-    const cookieStore = cookies();
-    const rowndToken = cookieStore.get(ROWND_COOKIE_ID)?.value ?? null;
+    const rowndToken = cookies().get(ROWND_COOKIE_ID)?.value ?? null;
     const status = await getRowndAuthenticationStatus(rowndToken);
 
     if (!status.is_authenticated) {
