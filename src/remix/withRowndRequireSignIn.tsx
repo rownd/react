@@ -29,7 +29,6 @@ const withRowndRequireSignIn = <P extends object>(
       prevAccessToken.current = access_token;
 
       if (access_token && isPropsFallbackEnabled) {
-        console.log('RELOAD!');
         cookieSignIn(() => window.location.reload());
         return;
       }

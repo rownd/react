@@ -1,8 +1,8 @@
 import Fallback from '@/components/Fallback';
 // import { getRowndUser } from '@rownd/next/server';
 // import { withRowndRequireSignIn } from '@rownd/next';
-import { getRowndUser } from '@rownd/next/server';
-import { withRowndRequireSignIn } from '@rownd/next';
+import { getRowndUser } from '../../../../../src/next/server';
+import { withRowndRequireSignIn } from '../../../../../src/next';
 import { cookies } from 'next/headers';
 
 async function Authors() {
@@ -10,12 +10,10 @@ async function Authors() {
   const posts: { id: number; title: string; body: string }[] = await data.json();
   const user = await getRowndUser(cookies);
 
-  console.log({ user });
-
   return (
     <div className="flex justify-center flex-col w-50 ">
       <h1 className="text-2xl font-bold">Authors</h1>
-      <h3>User ID: {user?.user_id}</h3>
+      <h3>User ID: {JSON.stringify(user, null, 2)}</h3>
       <Fallback />
       <ul className="flex flex-col list-disc">
       {posts

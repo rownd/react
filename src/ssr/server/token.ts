@@ -1,5 +1,6 @@
 import * as jose from 'jose';
 import { rowndCookie, RowndCookieData } from './cookie';
+import { UserContext } from '../../context/types';
 
 export type RowndAuthenticatedUser = {
   user_id: string;
@@ -22,6 +23,17 @@ export type IsAuthenticatedResponse =
 
 const CLAIM_USER_ID = 'https://auth.rownd.io/app_user_id';
 
+export const getRowndApiUrl = (): URL => {
+  let url: URL;
+  const defaultUrl = 'https://api.rownd.io';
+  try {
+    url = new URL(process.env.ROWND_API_URL ?? defaultUrl);
+  } catch {
+    url = new URL(defaultUrl);
+  }
+  return url;
+}
+
 const KEYSTORE_CACHE_TTL = 1800; // 30 minutes
 type Keystore = (
   protectedHeader?: jose.JWSHeaderParameters,
@@ -30,16 +42,8 @@ type Keystore = (
 let keystoreCache: undefined | { keystore: Keystore; expiresAt: number };
 
 const getKeystore = async (): Promise<Keystore> => {
-  let url: URL;
-  const defaultUrl = 'https://api.rownd.io';
-  try {
-    url = new URL(process.env.ROWND_API_URL ?? defaultUrl);
-  } catch {
-    url = new URL(defaultUrl);
-  }
-
   const authConfigRes = await fetch(
-    `${url.origin}/hub/auth/.well-known/oauth-authorization-server`
+    `${getRowndApiUrl().origin}/hub/auth/.well-known/oauth-authorization-server`
   );
   const authConfig = await authConfigRes.json();
 
@@ -145,3 +149,36 @@ export const getRowndAuthenticationStatus = async (
     };
   }
 };
+
+export const getRowndUserData = async (accessToken: string): Promise<null | UserContext> => {
+  const { payload } = await validateAccessToken(accessToken);
+
+  const aud = payload?.["aud"];
+
+  if (!aud || typeof aud === 'string') {
+    return null;
+  }
+
+  const appId = aud[0]?.split(':')?.[1];
+
+  if (!appId) {
+    return null;
+  }
+
+  let userData: UserContext;
+
+  try {
+    const userDataRes = await fetch(`${getRowndApiUrl().origin}/me/applications/${appId}/data`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  
+    userData = await userDataRes.json();
+  } catch (err) {
+    console.error('Error fetching user data:', err);
+    return null;
+  }
+
+  return userData;
+}

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 // import { RowndProvider } from '@rownd/next';
-import { RowndProvider } from '@rownd/next';
+import { RowndProvider } from '../../../../src/next/RowndProvider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -38,9 +38,7 @@ export default function RootLayout({
           {children}
         </NextJSRowndProvider> */}
         <RowndProvider
-          appKey="key_ov0nu0ckrmhxctupfgnlrwxt"
-          apiUrl="https://api.us-east-2.dev.rownd.io/"
-          hubUrlOverride="https://hub.dev.rownd.io/"
+          appKey="key_nmdccn7goxjch5s0hoholrh9"
         >
           {children}
         </RowndProvider>
