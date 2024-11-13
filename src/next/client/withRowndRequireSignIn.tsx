@@ -4,7 +4,7 @@ import { ROWND_COOKIE_ID } from '../../ssr/server/cookie';
 import RequireSignIn from './components/RequireSignIn';
 import { ReadOnlyRequestCookies } from '../server/getRowndUser';
 
-type ReactServerComponent<Props = {}> = (props: Props) => React.ReactNode;
+type ReactServerComponent<Props> = (props: Props) => React.ReactNode;
 
 const withRowndRequireSignIn = <P extends object>(
   WrappedComponent: ReactServerComponent<P>,
