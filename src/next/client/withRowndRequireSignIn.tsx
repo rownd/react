@@ -12,14 +12,14 @@ const withRowndRequireSignIn = <P extends object>(
   Fallback: React.ComponentType,
   options: {
     onUnauthenticated?: () => void;
-  } = {}
+  } | undefined
 ) => {
   return async (props: P) => {
     const rowndToken = cookies().get(ROWND_COOKIE_ID)?.value ?? null;
     const status = await getRowndAuthenticationStatus(rowndToken);
 
     if (!status.is_authenticated) {
-      if (options.onUnauthenticated && !status.is_expired) {
+      if (options?.onUnauthenticated && !status.is_expired) {
         options.onUnauthenticated();
       }
       return (
