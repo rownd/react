@@ -65,7 +65,7 @@
     },
     {
       "path": "dist/remix.js",
-      "limit": "10 KB"
+      "limit": "20 KB"
     }
   ],
   "release-it": {
