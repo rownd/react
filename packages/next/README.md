@@ -6,7 +6,7 @@
 Run `npm install @rownd/next` or `yarn add @rownd/next`.
 
 ## Core Components
-###RowndProvider
+### RowndProvider
 
 The root component that initializes Rownd authentication and state management. Add this to your root layout:
 
@@ -26,8 +26,8 @@ export default function RootLayout({
       <body>
         <RowndProvider
           appKey="<your app key>"
-          apiUrl="<your api url>"
-          hubUrlOverride="<your hub url>"
+          apiUrl="<your api url>" // Optional for enterprise users
+          hubUrlOverride="<your hub url>" // Optional for enterprise users
         >
           {children}
         </RowndProvider>
@@ -53,7 +53,8 @@ In your main `middleware.ts` file, add the Rownd middleware higher-order functio
 ```typescript
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { withRowndMiddleware, ROWND_TOKEN_CALLBACK_PATH } from '@rownd/next';
+import { withRowndMiddleware } from '@rownd/next';
+import { ROWND_TOKEN_CALLBACK_PATH } from '@rownd/next/server';
 
 export const middleware = withRowndMiddleware((request: NextRequest) => {
   return NextResponse.next();
@@ -80,16 +81,19 @@ the `withRowndRequireSignIn` higher-order component.
 import {
   withRowndRequireSignIn,
   getRowndUser,
+  getAccessToken,
   isAuthenticated,
 } from '@rownd/next';
 import { cookies } from 'next/headers';
 
 async function ProtectedPage() {
-  const user = await getRowndUser();
+  const user = await getRowndUser(cookies);
+  const isAuthenticated = await isAuthenticated(cookies);
+  const accessToken = await getAccessToken(cookies);
   
   return (
     <div>
-      <h1>Welcome {user.user_id}</h1>
+      <h1>Welcome {user.data?.user_id}</h1>
       <p>Your access token: {user.access_token}</p>
     </div>
   );
@@ -110,12 +114,12 @@ export default withRowndRequireSignIn(ProtectedPage, AuthFallback, {
 ### Client-Side Authentication
 Use the `useRownd` hook to access authentication state and methods:
 
-```typescript
+```jsx
 'use client';
 
 import { useRownd } from '@rownd/next';
 
-export function AuthenticationStatus() {
+export function ClientPage() {
   const { 
     is_authenticated,
     is_initializing,
@@ -131,20 +135,20 @@ export function AuthenticationStatus() {
   return (
     <div>
       {is_authenticated ? (
-        <button onClick={signOut}>Sign Out</button>
+        <button onClick={() => signOut()}>Sign Out</button>
       ) : (
-        <button onClick={requestSignIn}>Sign In</button>
+        <button onClick={() => requestSignIn()}>Sign In</button>
       )}
     </div>
   );
 }
 ```
 
-##Server Utilities
+## Server Utilities
 ### getRowndUser
 Server-side function to get the current authenticated user:
 
-```typescript
+```jsx
 import { getRowndUser } from '@rownd/next';
 
 async function ServerComponent() {
@@ -156,14 +160,16 @@ async function ServerComponent() {
   
   return (
     <div>
-      <h1>User ID: {user.user_id}</h1>
-      <p>Token: {user.access_token}</p>
+      <h1>User ID: {user.data?.user_id}</h1>
+      <h1>Email: {user.data?.email}</h1>
+      <h1>First name: {user.data?.first_name}</h1>
+      <h1>Last name: {user.data?.last_name}</h1>
     </div>
   );
 }
 ```
 
-##State Management
+### State Management
 The SDK uses a custom store implementation for managing authentication state. The store includes:
 
 ```typescript
