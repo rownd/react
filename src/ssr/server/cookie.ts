@@ -2,7 +2,9 @@ export type RowndCookieData = {
   accessToken: string;
 };
 
-const createCookie = (id: string) => {
+export const ROWND_COOKIE_ID = 'rownd-session';
+
+const createCookie = (id: string, path: string = '/') => {
   return {
     parse: (header: string | null): undefined | RowndCookieData => {
       if (!header) return undefined;
@@ -32,14 +34,15 @@ const createCookie = (id: string) => {
       cookie += '; Secure';
       cookie += '; HttpOnly';
       cookie += '; Max-Age=3600'; // 1 hour
-      cookie += '; SameSite=Strict'
+      cookie += '; SameSite=Strict';
+      cookie += `; Path=${path}`;
 
       return cookie;
     },
   };
 };
 
-export const ROWND_TOKEN_CALLBACK_PATH = '/rownd-token-callback';
+export const ROWND_TOKEN_CALLBACK_PATH = '/api/rownd-token-callback';
 
 export const setCookie = async (token: string): Promise<string | undefined> => {
   try {
@@ -57,4 +60,4 @@ export const setCookie = async (token: string): Promise<string | undefined> => {
   }
 };
 
-export const rowndCookie = createCookie('rownd-session');
+export const rowndCookie = createCookie(ROWND_COOKIE_ID);

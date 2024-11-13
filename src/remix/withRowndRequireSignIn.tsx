@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRownd } from './useRownd';
 import { RequireSignIn } from '../index';
-import useCookie from './hooks/useCookie';
+import useCookie from '../ssr/hooks/useCookie';
 
 const withRowndRequireSignIn = <P extends object>(
   WrappedComponent: React.ComponentType<P>,
@@ -12,7 +12,7 @@ const withRowndRequireSignIn = <P extends object>(
     const { access_token, is_initializing } = useRownd();
     const data = useLoaderData();
     const [signingOut, setSigningOut] = useState(false);
-    const { cookieSignIn, cookieSignOut } = useCookie();
+    const { cookieSignIn, cookieSignOut } = useCookie(useRownd);
 
     const isPropsFallbackEnabled = useMemo(
       () => data?.is_authenticated === false || data?.is_expired === true,

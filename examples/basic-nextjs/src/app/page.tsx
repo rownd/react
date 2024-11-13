@@ -1,16 +1,13 @@
-'use client';
-
-import { useRownd } from '../../../../src';
+import Link from 'next/link';
 
 export default function Home() {
-  const { requestSignIn, is_authenticated } = useRownd();
-
-  const isAuth = is_authenticated ? 'true' : 'false';
 
   return (
     <div className="flex justify-center flex-col w-50 ">
-      <div className="text-center">Authenticated: {isAuth}</div>
-      <button onClick={() => requestSignIn()}>login</button>
+      <h1 className="text-2xl font-bold">Home</h1>
+      <Link className="text-underline text-sm text-gray-100 hover:text-gray-200" href="/authors">
+        Go to authors page
+      </Link>
     </div>
   );
 }

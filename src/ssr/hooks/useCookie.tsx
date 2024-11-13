@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
-import { useRownd } from '../useRownd';
 import { setCookie } from '../server/cookie';
+import { TRowndContext } from '../../context/types';
 
-const useCookie = () => {
+const useCookie = (useRownd: () => TRowndContext) => {
   const { getAccessToken } = useRownd();
 
   const cookieSignIn = useCallback(

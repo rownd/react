@@ -1,4 +1,4 @@
-#### README's for [Next](/rownd/react/blob/main/packages/next/README.md) and [Remix](/rownd/react/blob/main/packages/remix/README.md).
+#### README's for [Next](https://github.com/rownd/react/tree/main/packages/next) and [Remix](https://github.com/rownd/react/tree/main/packages/remix).
 
 # React
 

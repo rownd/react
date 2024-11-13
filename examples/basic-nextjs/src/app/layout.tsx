@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import { NextJSRowndProvider } from '../../../../src/next';
+// import { RowndProvider } from '@rownd/next';
+import { RowndProvider } from '../../../../src/next/RowndProvider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -29,13 +30,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextJSRowndProvider
+        {/* <NextJSRowndProvider
           appKey="key_ov0nu0ckrmhxctupfgnlrwxt"
           apiUrl="https://api.us-east-2.dev.rownd.io/"
           hubUrlOverride="https://hub.dev.rownd.io/"
         >
           {children}
-        </NextJSRowndProvider>
+        </NextJSRowndProvider> */}
+        <RowndProvider
+          appKey="key_nmdccn7goxjch5s0hoholrh9"
+        >
+          {children}
+        </RowndProvider>
       </body>
     </html>
   );

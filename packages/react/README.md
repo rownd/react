@@ -1,4 +1,6 @@
-# React / Next.js
+#### README's for [Next](/rownd/react/blob/main/packages/next/README.md) and [Remix](/rownd/react/blob/main/packages/remix/README.md).
+
+# React
 
 ## Installation
 
@@ -39,6 +41,7 @@ The Rownd React SDK automatically injects the Rownd Hub snippet into your React 
 - `rootOrigin` (optional): If you're using Rownd across multiple domains (e.g., `rownd.io` and `app.rownd.io`), set this to the "root" _origin_ (e.g., https://rownd.io).
 
 ### React Next.js
+Rownd currently utilizes client-side rendering for some of its components.  
 
 In the root `layout.tsx` of your app:
 
@@ -72,9 +75,12 @@ export default function RootLayout({
 - `apiUrl` (optional): The URL of your Rownd API instance.
 - `hubUrlOverride` (optional): The URL of your Rownd Hub instance.
 
+**Be sure to import the Rownd NextJS component from @rownd/react/next**
+
 Later on within your app's components, you can use the Rownd hook to access the Rownd browser API:
 
 ```jsx
+"use client";
 import React from 'react';
 import { useRownd } from '@rownd/next';
 

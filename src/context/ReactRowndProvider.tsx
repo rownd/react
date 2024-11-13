@@ -1,6 +1,6 @@
 import React from 'react';
 import { RowndProvider, RowndProviderProps } from './RowndProvider';
-import HubScriptInjector from './HubScriptInjector';
+import InternalProviderHubScriptInjector from './HubScriptInjector/InternalProviderHubScriptInjector';
 
 export const ReactRowndProvider: React.FC<RowndProviderProps> = ({
   children,
@@ -8,7 +8,7 @@ export const ReactRowndProvider: React.FC<RowndProviderProps> = ({
 }) => {
   return (
     <RowndProvider {...props}>
-      <HubScriptInjector />
+      <InternalProviderHubScriptInjector />
       {children}
     </RowndProvider>
   );

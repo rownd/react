@@ -1,4 +1,5 @@
-import { NextJSRowndProvider } from './NextJSRowndProvider';
-import { useRownd } from './useRownd';
+import { RowndProvider } from './RowndProvider';
+import { useRownd } from './client/useRownd';
+import withRowndRequireSignIn from './client/withRowndRequireSignIn';
 
-export { NextJSRowndProvider, useRownd };
+export { RowndProvider, useRownd, withRowndRequireSignIn };

@@ -1,11 +1,11 @@
 import React, { useContext, createContext } from 'react';
-import { HubScriptInjectorProps } from './HubScriptInjector';
+import { HubScriptInjectorProps } from './HubScriptInjector/HubScriptInjector';
 
 const InternalRowndContext = createContext<HubScriptInjectorProps | undefined>(undefined);
 
 type InternalRowndProvider = HubScriptInjectorProps & { children: React.ReactNode }
 
-export function InternalRowndProvider({ children, ...rest }: InternalRowndProvider) {
+export const InternalRowndProvider = ({ children, ...rest }: InternalRowndProvider) => {
   return (
     <InternalRowndContext.Provider value={rest}>      
       {children}

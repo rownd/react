@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { useRownd } from './useRownd';
-import useCookie from './hooks/useCookie';
+import useCookie from '../ssr/hooks/useCookie';
 
 const RemixClientScript: React.FC = () => {
   const { access_token, is_initializing } = useRownd();
-  const { cookieSignIn, cookieSignOut } = useCookie();
+  const { cookieSignIn, cookieSignOut } = useCookie(useRownd);
 
   // Listen for access_token changes to determine when to sign(In/Out) cookies and state.
   const prevAccessToken = useRef<string | null | undefined>(undefined);

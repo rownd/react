@@ -3,7 +3,7 @@ import { useRownd } from '../context';
 import { SignInProps } from '../context/types';
 
 interface RequireSignInProps {
-  children?: React.ReactNode;
+  children: any;
   initializing?: React.ReactNode;
   signInProps?: SignInProps;
   disabled?: boolean;
