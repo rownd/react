@@ -47,7 +47,7 @@ export default function RootLayout({
 > Enterprise endpoints are not needed in most use-cases and these props will default to Rownd's commercial cloud
 
 
-###Middleware Setup
+### Middleware Setup
 In your main `middleware.ts` file, add the Rownd middleware higher-order function. As well as the Rownd token callback path:
 
 ```typescript
@@ -71,7 +71,7 @@ export const config = {
 
 ```
 
-##Authentication Components
+## Authentication Components
 
 ### Protected Routes / Pages
 To protect a page from being accessed by unauthenticated users, you can use
@@ -104,7 +104,7 @@ function AuthFallback() {
   return <div>Please sign in to continue...</div>;
 }
 
-export default withRowndRequireSignIn(ProtectedPage, AuthFallback, {
+export default withRowndRequireSignIn(ProtectedPage, cookies, AuthFallback, {
   onUnauthenticated: () => {
     // Optional callback when user is not authenticated
   }
@@ -150,9 +150,10 @@ Server-side function to get the current authenticated user:
 
 ```jsx
 import { getRowndUser } from '@rownd/next';
+import { cookies } from 'next/headers';
 
 async function ServerComponent() {
-  const user = await getRowndUser();
+  const user = await getRowndUser(cookies);
   
   if (!user) {
     return <div>Not authenticated</div>;
