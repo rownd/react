@@ -6,6 +6,8 @@ import {
   withRowndRequireSignIn,
 } from '../../../../../src/remix';
 
+import { isAuthenticated, getRowndUser, getRowndUserId } from '../../../../../src/remix/server';
+
 type LoaderResponse = {
   user_id: string;
   access_token: string;
@@ -20,6 +22,10 @@ type LoaderResponse = {
 export const loader: LoaderFunction = withRowndLoader(async ({ request }: LoaderFunctionArgs, { user_id, access_token }) => {
   const postsRes = await fetch('https://jsonplaceholder.typicode.com/posts');
   const posts = await postsRes.json();
+  const authenticated = await isAuthenticated(request);
+  const user = await getRowndUser(request);
+  const userId = await getRowndUserId(request);
+  console.log({ authenticated, user, userId });
 
   return { user_id, access_token, posts };
   },

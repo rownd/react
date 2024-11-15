@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useRownd } from './useRownd';
-import useCookie from '../ssr/hooks/useCookie';
+import useCookie from '../../ssr/hooks/useCookie';
 
 const RemixClientScript: React.FC = () => {
   const { access_token, is_initializing } = useRownd();
