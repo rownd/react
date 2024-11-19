@@ -6,7 +6,7 @@ import { RowndProvider } from '../../../src/context/index';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RowndProvider appKey="YOUR APP KEY">
+    <RowndProvider appKey="key_nmdccn7goxjch5s0hoholrh9">
       <App />
     </RowndProvider>
   </React.StrictMode>
