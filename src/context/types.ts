@@ -1,5 +1,7 @@
 type AuthLevel = 'instant' | 'guest' | 'unverified' | 'verified';
 
+type Unsubscribe = () => void;
+
 export type TRowndContext = {
   requestSignIn: (e?: SignInProps) => void;
   signOut: () => void;
@@ -13,6 +15,9 @@ export type TRowndContext = {
   }) => Promise<string | undefined | null>;
   getFirebaseIdToken: (token: string) => Promise<string>;
   getAppConfig: () => any;
+  onAuthenticated: (
+    callback: (userData: UserDataContext) => void
+  ) => Unsubscribe;
   passkeys: { register: () => void; authenticate: () => void };
   is_authenticated: boolean;
   is_initializing: boolean;
@@ -78,7 +83,7 @@ export type UserContext = {
   is_loading: boolean;
 };
 
-type UserDataContext = {
+export type UserDataContext = {
   user_id?: string;
   email?: string | null;
   phone?: string | null;
