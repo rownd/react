@@ -45,7 +45,7 @@ function with your server's request handler `handleRequest`:
 entry.server.ts
 ```jsx
 ...
-import { withRowndHandleRequest } from '@rownd/remix';
+import { withRowndHandleRequest } from '@rownd/remix/server';
 ...
 
 export default withRowndHandleRequest(function handleRequest(
@@ -70,9 +70,12 @@ import { useLoaderData } from '@remix-run/react';
 
 import {
   withRowndRequireSignIn,
-  withRowndLoader,
   useRownd,
 } from '@rownd/remix';
+
+import {
+  withRowndLoader,
+} from '@rownd/remix/server';
 
 export const loader = withRowndLoader(async function (
   { context, request }: LoaderFunctionArgs,

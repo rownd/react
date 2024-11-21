@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { HubListenerProps } from '../RowndProvider';
+import { HubListenerProps } from '../RowndContext';
 
 declare global {
   interface Window {

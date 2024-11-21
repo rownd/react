@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRownd } from './useRownd';
-import { RequireSignIn } from '../index';
-import useCookie from '../ssr/hooks/useCookie';
+import { RequireSignIn } from '../../index';
+import useCookie from '../../ssr/hooks/useCookie';
 
 const withRowndRequireSignIn = <P extends object>(
   WrappedComponent: React.ComponentType<P>,

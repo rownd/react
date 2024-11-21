@@ -1,12 +1,11 @@
-import { useStore } from './store/useStore';
-import { store } from './store';
-import { TRowndContext, UserDataContext } from '../../context/types';
 import { useCallback, useMemo } from 'react';
+import { TRowndContext, UserDataContext } from '../../context/types';
+import { useRownd as useRowndDefault } from '../../index';
 import { setCookie } from '../../ssr/server/cookie';
 import { addOnAuthenticatedListener, unsubscribeOnAuthenticatedListener } from '../../utils/listeners';
 
-export const useRownd = (): TRowndContext => {
-  const state = useStore(store, (x) => x);
+const useRownd = (): TRowndContext => {
+  const rowndDefault = useRowndDefault();
 
   const onAuthenticated: (
     callback: (userData: UserDataContext) => void
@@ -23,20 +22,23 @@ export const useRownd = (): TRowndContext => {
     []
   );
 
-  const memoized = useMemo(() => {
-    return {
-      ...state,
+  const memoized = useMemo(
+    () => ({
+      ...rowndDefault,
       onAuthenticated,
       signOut: async () => {
+        // Handle cookie before clearing state
         try {
           await setCookie('invalid');
         } catch (err) {
           console.log('Failed to set sign out cookie: ', err);
         }
-        state.signOut();
+        rowndDefault.signOut();
       },
-    };
-  }, [state]);
-
+    }),
+    [rowndDefault]
+  );
   return memoized;
 };
+
+export { useRownd };

@@ -14,19 +14,18 @@ export default defineConfig({
         next: resolve(__dirname, 'src/next/index.ts'),
         'next-server': resolve(__dirname, 'src/next/server/index.ts'),
         remix: resolve(__dirname, 'src/remix/index.tsx'),
+        'remix-server': resolve(__dirname, 'src/remix/server/index.ts'),
       },
       // the proper extensions will be added
       fileName: 'rownd',
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['react', 'react/jsx-runtime', 'next'],
+      external: ['react', 'react/jsx-runtime', 'next', 'jose'],
       output: {
         // Preserve directory structure
-        preserveModules: true,
-        preserveModulesRoot: 'src',
-        assetFileNames: 'assets/[name][extname]',
         entryFileNames: '[name].js',
+        preserveModules: true,
       },
     },
   },

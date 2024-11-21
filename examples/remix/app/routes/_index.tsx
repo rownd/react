@@ -1,6 +1,7 @@
 import type { MetaFunction } from '@remix-run/node';
 import { useNavigate } from '@remix-run/react';
 import { useRownd } from '../../../../src/remix';
+import { useEffect } from 'react';
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,8 +11,17 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const { requestSignIn, is_authenticated, signOut, user } = useRownd();
+  const { requestSignIn, is_authenticated, signOut, user, onAuthenticated } = useRownd();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthenticated((userData) => {
+      console.log('onAuthenticated', userData);
+    });
+
+    return () => unsubscribe();
+  }, [onAuthenticated]);
+
   return (
     <div className="flex h-screen items-center justify-center">
       <div className="flex flex-col items-center gap-16">
