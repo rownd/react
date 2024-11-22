@@ -129,6 +129,6 @@
     "url": "https://github.com/rownd/react.git"
   },
   "dependencies": {
-    "jose": "^5.9.4"
+    "jose": "^5.9.6"
   }
 }
