@@ -1,8 +1,8 @@
-import { useRownd } from './RowndProvider';
+import { useRownd } from './RowndContext';
 import RequireSignIn from '../components/RequireSignIn';
 import SignedIn from '../components/SignedIn';
 import SignedOut from '../components/SignedOut';
-import { ReactRowndProvider } from '../react/ReactRowndProvider';
+import { ReactRowndProvider } from './ReactRowndProvider';
 
 const RowndProvider = ReactRowndProvider;
 

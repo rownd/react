@@ -6,6 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const version = process.env.VERSION;
+console.log('Release version: ', version);
 if (!version) {
     console.error('No version specified! This script should be run by release-it');
     process.exit(1);

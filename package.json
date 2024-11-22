@@ -1,6 +1,6 @@
 {
   "name": "@rownd/react",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "license": "MIT",
   "private": false,
   "type": "module",
@@ -86,13 +86,13 @@
         "npm run build"
       ],
       "before:release": [
-        "node scripts/before-release.js",
+        "VERSION=${version} node scripts/before-release.js",
         "git add ."
       ],
       "after:release": [
         "cd packages/react && npm publish --access public",
-        "cd packages/next && npm publish --access public",
-        "cd packages/remix && npm publish --access public"
+        "cd ../next && npm publish --access public",
+        "cd ../remix && npm publish --access public"
       ]
     }
   },
