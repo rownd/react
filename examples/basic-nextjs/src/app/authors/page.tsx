@@ -4,6 +4,7 @@ import Fallback from '@/components/Fallback';
 import { getRowndUser } from '../../../../../src/next/server';
 import { withRowndRequireSignIn } from '../../../../../src/next';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 
 async function Authors() {
   const data = await fetch('https://jsonplaceholder.typicode.com/posts');
@@ -14,6 +15,7 @@ async function Authors() {
     <div className="flex justify-center flex-col w-50 ">
       <h1 className="text-2xl font-bold">Authors</h1>
       <h3>User ID: {JSON.stringify(user, null, 2)}</h3>
+      <Link href="/">Home</Link>
       <Fallback />
       <ul className="flex flex-col list-disc">
       {posts

@@ -9,7 +9,7 @@ import {
 import type { LinksFunction } from '@remix-run/node';
 
 import './tailwind.css';
-import { RemixRowndProvider } from '../../../src/remix';
+import { RemixRowndProvider } from '../../../src/remix/index';
 
 export const loader = async (): Promise<{
   env: {
