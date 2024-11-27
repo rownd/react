@@ -15,6 +15,8 @@ export const useRownd = (): TRowndContext => {
     callback: (userData: UserDataContext) => void
   ) => () => void = useCallback(
     (callback: (userData: UserDataContext) => void) => {
+
+      // If the user is authenticated on the first mount, we want to call the callback immediately
       if (state.is_authenticated && !state.is_initializing && Boolean(state.user.data.user_id) && isFirstMount.current) {
         callback(state.user.data);
         isFirstMount.current = false;
