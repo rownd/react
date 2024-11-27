@@ -7,7 +7,7 @@ import { UserContext } from '../../context/types';
 
 export type ReadOnlyRequestCookies = {
   get: (name: string) => RequestCookie | undefined;
-};
+} | any;
 
 export type RequestCookie = {
   name: string;

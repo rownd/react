@@ -53,8 +53,7 @@ In your main `middleware.ts` file, add the Rownd middleware higher-order functio
 ```typescript
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { withRowndMiddleware } from '@rownd/next';
-import { ROWND_TOKEN_CALLBACK_PATH } from '@rownd/next/server';
+import { withRowndMiddleware, ROWND_TOKEN_CALLBACK_PATH } from '@rownd/next/server';
 
 export const middleware = withRowndMiddleware((request: NextRequest) => {
   return NextResponse.next();
@@ -79,10 +78,12 @@ the `withRowndRequireSignIn` higher-order component.
 
 ```jsx
 import {
-  withRowndRequireSignIn,
   getRowndUser,
   getAccessToken,
   isAuthenticated,
+} from '@rownd/next/server';
+import {
+  withRowndRequireSignIn,
 } from '@rownd/next';
 import { cookies } from 'next/headers';
 
@@ -149,7 +150,7 @@ export function ClientPage() {
 Server-side function to get the current authenticated user:
 
 ```jsx
-import { getRowndUser } from '@rownd/next';
+import { getRowndUser } from '@rownd/next/server';
 import { cookies } from 'next/headers';
 
 async function ServerComponent() {
