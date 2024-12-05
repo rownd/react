@@ -4,7 +4,7 @@ import {
   useRownd,
   withRowndRequireSignIn,
   withRowndLoader,
-} from '../../../../../src/remix';
+} from '../../../../../src/remix/index';
 
 type LoaderResponse = {
   user_id: string;

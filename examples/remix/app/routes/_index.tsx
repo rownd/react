@@ -1,6 +1,6 @@
 import type { MetaFunction } from '@remix-run/node';
 import { useNavigate } from '@remix-run/react';
-import { useRownd } from '../../../../src/remix';
+import { useRownd } from '../../../../src/remix/index';
 import { useEffect } from 'react';
 
 export const meta: MetaFunction = () => {

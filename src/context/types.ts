@@ -1,6 +1,6 @@
 type AuthLevel = 'instant' | 'guest' | 'unverified' | 'verified';
 
-type Unsubscribe = () => void;
+export type Unsubscribe = () => void;
 
 export type TRowndContext = {
   requestSignIn: (e?: SignInProps) => void;

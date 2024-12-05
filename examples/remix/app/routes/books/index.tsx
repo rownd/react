@@ -4,7 +4,7 @@ import {
   useRownd,
   withRowndLoader,
   withRowndRequireSignIn,
-} from '../../../../../src/remix';
+} from '../../../../../src/remix/index';
 
 import { isAuthenticated, getRowndUser, getRowndUserId } from '../../../../../src/remix/server';
 
