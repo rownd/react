@@ -5,9 +5,12 @@ import {
 import { ROWND_COOKIE_ID } from '../../ssr/server/cookie';
 import { UserContext } from '../../context/types';
 
+export type RequestCookiesFn = 
+  () => Promise<ReadOnlyRequestCookies> | ReadOnlyRequestCookies;
+
 export type ReadOnlyRequestCookies = {
   get: (name: string) => RequestCookie | undefined;
-} | any;
+};
 
 export type RequestCookie = {
   name: string;
@@ -15,8 +18,9 @@ export type RequestCookie = {
 };
 
 export const getRowndUser =
-  async (cookies: () => ReadOnlyRequestCookies): Promise<UserContext | null> => {
-    const rowndToken = cookies().get(ROWND_COOKIE_ID)?.value ?? null;
+  async (cookies: RequestCookiesFn): Promise<UserContext | null> => {
+    const cookieObj = await cookies();
+    const rowndToken = cookieObj.get(ROWND_COOKIE_ID)?.value ?? null;
     const status = await getRowndAuthenticationStatus(rowndToken);
 
     if (!status.access_token) {

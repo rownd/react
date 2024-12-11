@@ -53,7 +53,7 @@ In your main `middleware.ts` file, add the Rownd middleware higher-order functio
 ```typescript
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { withRowndMiddleware, ROWND_TOKEN_CALLBACK_PATH } from '@rownd/next/server';
+import { withRowndMiddleware } from '@rownd/next/server';
 
 export const middleware = withRowndMiddleware((request: NextRequest) => {
   return NextResponse.next();
@@ -62,7 +62,7 @@ export const middleware = withRowndMiddleware((request: NextRequest) => {
 export const config = {
   matcher: [
     // Required for Rownd token handling
-    ROWND_TOKEN_CALLBACK_PATH,
+    '/api/rownd-token-callback',
     // Add your protected routes
     '/protected/:path*'
   ]
