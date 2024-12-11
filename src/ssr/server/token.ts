@@ -13,12 +13,14 @@ export type IsAuthenticatedResponse =
       access_token: string;
       is_authenticated: true;
       is_expired: false;
+      err: undefined;
     }
   | {
       user_id: undefined;
       access_token: undefined;
       is_authenticated: false;
       is_expired: boolean;
+      err: Error;
     };
 
 const CLAIM_USER_ID = 'https://auth.rownd.io/app_user_id';
@@ -128,13 +130,9 @@ export const getRowndAuthenticationStatus = async (
       access_token: accessToken,
       is_authenticated: true,
       is_expired: false,
+      err: undefined,
     };
   } catch (err) {
-    if (err instanceof Error) {
-      console.log('validateAccessToken failed:', err.message);
-    } else {
-      console.log('validateAccessToken failed:', err);
-    }
     let isExpired = false;
 
     if (err instanceof jose.errors.JWTExpired) {
@@ -146,6 +144,7 @@ export const getRowndAuthenticationStatus = async (
       user_id: undefined,
       access_token: undefined,
       is_expired: isExpired,
+      err: err as Error,
     };
   }
 };

@@ -20,6 +20,7 @@ export const store = createStore<TRowndContext>(
     setUserValue: () => notInitialized(),
     getFirebaseIdToken: () => notInitialized(),
     getAppConfig: () => notInitialized(),
+    onAuthenticated: () => () => undefined,
     is_initializing: true,
     is_authenticated: false,
     access_token: null,
