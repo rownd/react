@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@rownd/next": "file:../../packages/next/rownd-next-2.5.0.tgz",
+    "@rownd/next": "file:../../packages/next/rownd-next-2.6.0.tgz",
     "next": "15.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
