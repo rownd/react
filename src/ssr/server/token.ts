@@ -139,6 +139,12 @@ export const getRowndAuthenticationStatus = async (
       isExpired = true;
     }
 
+    // This likely indicates an issue with configuration,
+    // so better to throw than to fail somewhat silently.
+    if (err instanceof jose.errors.JWKSNoMatchingKey) {
+      throw new Error(err.message + '. Do you need to update the ROWND_API_URL env var?');
+    }
+
     return {
       is_authenticated: false,
       user_id: undefined,

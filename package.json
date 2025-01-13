@@ -34,13 +34,15 @@
   "scripts": {
     "start": "cd example && npm run dev",
     "build": "vite build && npm run prepare-packages",
+    "build:dev": "vite build --minify false && npm run prepare-packages",
     "prepare-packages": "node scripts/prepare-packages.js",
     "test": "vitest",
     "lint": "eslint src",
     "prepare": "vite build",
     "release": "release-it",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "examples:link": "node scripts/link-examples.js"
   },
   "husky": {
     "hooks": {
@@ -75,6 +77,9 @@
     },
     "github": {
       "release": true
+    },
+    "npm": {
+      "publish": false
     },
     "plugins": {
       "@release-it/conventional-changelog": {
