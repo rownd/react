@@ -14,7 +14,7 @@
     "@remix-run/node": "^2.12.1",
     "@remix-run/react": "^2.12.1",
     "@remix-run/serve": "^2.12.1",
-    "@rownd/remix": "file:../../packages/remix/rownd-remix-2.2.2.tgz",
+    "@rownd/remix": "^2.7.0",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

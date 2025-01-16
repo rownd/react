@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useCallback } from 'react';
 import { RowndContext, RowndProviderProps } from '../context/RowndContext';
 import useHub from '../hooks/useHub';
 import { TRowndContext } from '../context/types';
@@ -18,11 +18,13 @@ function RemixRowndProvider({ children, ...props }: RowndProviderProps) {
     },
   });
 
+  const stateListener = useCallback(({ state, api }) => {
+    hubListenerCb({ state, api, callback: setHubState });
+  }, [hubListenerCb]);
+
   return (
     <InternalRowndProvider
-      stateListener={({ state, api }) =>
-        hubListenerCb({ state, api, callback: setHubState })
-      }
+      stateListener={stateListener}
       {...props}
     >
       <RowndContext.Provider value={hubState}>
