@@ -47,11 +47,13 @@ export const ReactRowndProvider: React.FC<RowndProviderProps> = ({
     );
   }, [is_authenticated, is_initializing, user.data.user_id]);
 
+  const stateListener = useCallback(({ state, api }) => {
+    hubListenerCb({ state, api, callback: setHubState })
+  }, [hubListenerCb]);
+
   return (
     <InternalRowndProvider
-      stateListener={({ state, api }) =>
-        hubListenerCb({ state, api, callback: setHubState })
-      }
+      stateListener={stateListener}
       {...props}
     >
       <RowndContext.Provider value={hubState}>
