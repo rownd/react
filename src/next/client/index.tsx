@@ -60,16 +60,18 @@ const Client: React.FC<Omit<RowndProviderProps, 'children'>> = (props) => {
     }
   }, [hasCookieSignedIn, user.data.user_id, is_initializing, is_authenticated]);
 
+  const stateListener = useCallback(({ state, api }) => {
+    hubListenerCb({
+      state,
+      api,
+      callback: setState,
+    })
+  }, [hubListenerCb, setState]);
+
   return (
     <>
       <HubScriptInjector
-        stateListener={({ state, api }) =>
-          hubListenerCb({
-            state,
-            api,
-            callback: setState,
-          })
-        }
+        stateListener={stateListener}
         {...props}
       />
     </>
