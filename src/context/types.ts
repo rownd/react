@@ -39,10 +39,20 @@ export type TRowndContext = {
   };
 };
 
+export enum RequestSignInIntent {
+  SignUp = 'sign_up',
+  SignIn = 'sign_in',
+}
+
 export type SignInProps = {
   identifier?: string;
   auto_sign_in?: boolean;
+  init_data?: Record<string, string | number | boolean | object>;
   post_login_redirect?: string;
+  include_user_data?: boolean;
+  redirect?: boolean;
+  intent?: RequestSignInIntent;
+  group_to_join?: string;
   prevent_closing?: boolean;
 } & (
   | {
