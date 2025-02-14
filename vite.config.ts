@@ -4,7 +4,14 @@ import dts from 'vite-plugin-dts';
 import preserveDirectives from 'rollup-preserve-directives';
 
 export default defineConfig({
-  plugins: [dts({ rollupTypes: true }), preserveDirectives()],
+  plugins: [
+    dts({
+      insertTypesEntry: true,
+      include: ['src/**/*'],
+      outDir: 'dist',
+    }),
+    preserveDirectives()
+  ],
   build: {
     sourcemap: true,
     lib: {
