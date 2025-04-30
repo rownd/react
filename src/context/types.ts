@@ -10,7 +10,7 @@ export type TRowndContext = {
   setUserValue: (key: string, value: any) => Promise<UserContext>;
   getAccessToken: (e?: {
     token?: string;
-    waitForToken?: string;
+    waitForToken?: boolean;
     [key: string]: any;
   }) => Promise<string | undefined | null>;
   getFirebaseIdToken: (token: string) => Promise<string>;
