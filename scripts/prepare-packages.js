@@ -16,11 +16,14 @@ async function copyPackageFiles() {
       );
     }
     
-    // Copy built files
+    // Copy built files, excluding node_modules
     await cp(
       join('dist'), 
       join('packages', pkg, 'dist'),
-      { recursive: true }
+      { 
+        recursive: true,
+        filter: (src) => !src.includes('node_modules')
+      }
     );
     console.log(`Copied built files for ${pkg}`);
   }

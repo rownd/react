@@ -10,10 +10,10 @@ import {
   unsubscribeOnAuthenticatedListener,
 } from '../utils/listeners';
 
-export const ReactRowndProvider: React.FC<RowndProviderProps> = ({
+export const ReactRowndProvider = ({
   children,
   ...props
-}) => {
+}: RowndProviderProps) => {
   const { setInitialHubState, hubListenerCb } = useHub();
 
   const onAuthenticated: (
