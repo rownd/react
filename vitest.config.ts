@@ -4,7 +4,13 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',
     coverage: {
-        provider: 'v8',
-    }
+      all: true,
+      include: ['src/**/*'],
+      exclude: ["test/**", "src/**/*.test.ts","node_modules/**"],
+      clean: true,
+      provider: "v8",
+      reporter: ["lcovonly", "text", "html", "cobertura"],
+      reportsDirectory: "./coverage",
+    },
   }
 });
