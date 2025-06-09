@@ -6,7 +6,7 @@
         "type": "node-terminal",
         "request": "launch",
         "command": "npm run dev",
-        "cwd": "${workspaceFolder}/examples/basic-nextjs-15"
+        "cwd": "${workspaceFolder}/examples/nextjs-15-basic"
       },
       {
         "name": "Next.js: debug client-side",
