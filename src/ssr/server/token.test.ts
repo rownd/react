@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach, } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { CLAIM_USER_ID, TokenHandler } from './token';
 import { mockDeep } from 'vitest-mock-extended';
 import createFetchMock from 'vitest-fetch-mock';
