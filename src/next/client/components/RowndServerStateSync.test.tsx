@@ -12,13 +12,14 @@ vi.mock('../../../ssr/hooks/useCookie');
 describe('RowndServerStateSync', () => {
   const mockCookieSignIn = vi.fn();
   const mockCookieSignOut = vi.fn();
+  let mockReload: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     // Reset all mocks before each test
     vi.clearAllMocks();
 
     // Mock window.location.reload
-    const mockReload = vi.fn();
+    mockReload = vi.fn();
     Object.defineProperty(window, 'location', {
       value: { reload: mockReload },
       writable: true
@@ -43,53 +44,143 @@ describe('RowndServerStateSync', () => {
     expect(mockCookieSignOut).not.toHaveBeenCalled();
   });
 
-  it('should trigger cookieSignIn when access token becomes available', () => {
-    (useRownd as any).mockReturnValue({
-      access_token: 'new-token',
-      is_initializing: false
+  describe('initial load (first render after initialization)', () => {
+    it('should sync cookie without reload when token exists on initial load', () => {
+      (useRownd as any).mockReturnValue({
+        access_token: 'existing-token',
+        is_initializing: false
+      });
+
+      render(<RowndServerStateSync />);
+
+      // Should sync cookie
+      expect(mockCookieSignIn).toHaveBeenCalledTimes(1);
+      // Should NOT pass a reload callback - just sync silently
+      expect(mockCookieSignIn).toHaveBeenCalledWith();
+      expect(mockCookieSignOut).not.toHaveBeenCalled();
     });
 
-    render(<RowndServerStateSync />);
+    it('should not trigger any actions when no token on initial load', () => {
+      (useRownd as any).mockReturnValue({
+        access_token: null,
+        is_initializing: false
+      });
 
-    expect(mockCookieSignIn).toHaveBeenCalled();
-    expect(mockCookieSignOut).not.toHaveBeenCalled();
+      render(<RowndServerStateSync />);
+
+      // No token on initial load means user wasn't signed in - nothing to sync
+      expect(mockCookieSignIn).not.toHaveBeenCalled();
+      expect(mockCookieSignOut).not.toHaveBeenCalled();
+    });
   });
 
-  it('should trigger cookieSignOut when access token is removed', () => {
-    (useRownd as any).mockReturnValue({
-      access_token: null,
-      is_initializing: false
+  describe('sign-in (null -> token)', () => {
+    it('should trigger cookieSignIn with reload callback when signing in', () => {
+      const mockUseRownd = useRownd as any;
+
+      // Initial render with no token
+      mockUseRownd.mockReturnValue({
+        access_token: null,
+        is_initializing: false
+      });
+
+      const { rerender } = render(<RowndServerStateSync />);
+      vi.clearAllMocks();
+
+      // User signs in - token becomes available
+      mockUseRownd.mockReturnValue({
+        access_token: 'new-token',
+        is_initializing: false
+      });
+
+      rerender(<RowndServerStateSync />);
+
+      expect(mockCookieSignIn).toHaveBeenCalledTimes(1);
+      // Should pass a reload callback for sign-in
+      expect(mockCookieSignIn).toHaveBeenCalledWith(expect.any(Function));
+      expect(mockCookieSignOut).not.toHaveBeenCalled();
     });
-
-    render(<RowndServerStateSync />);
-
-    expect(mockCookieSignOut).toHaveBeenCalled();
-    expect(mockCookieSignIn).not.toHaveBeenCalled();
   });
 
-  it('should not trigger any cookie actions when access token remains the same', () => {
-    const mockUseRownd = useRownd as any;
+  describe('token refresh (token -> different token)', () => {
+    it('should sync cookie silently without reload on token refresh', () => {
+      const mockUseRownd = useRownd as any;
 
-    // Initial render with a token
-    mockUseRownd.mockReturnValue({
-      access_token: 'same-token',
-      is_initializing: false
+      // Initial render with a token
+      mockUseRownd.mockReturnValue({
+        access_token: 'original-token',
+        is_initializing: false
+      });
+
+      const { rerender } = render(<RowndServerStateSync />);
+      vi.clearAllMocks();
+
+      // Token refreshes - different token
+      mockUseRownd.mockReturnValue({
+        access_token: 'refreshed-token',
+        is_initializing: false
+      });
+
+      rerender(<RowndServerStateSync />);
+
+      // Should sync cookie silently (no reload callback)
+      expect(mockCookieSignIn).toHaveBeenCalledTimes(1);
+      expect(mockCookieSignIn).toHaveBeenCalledWith();
+      expect(mockCookieSignOut).not.toHaveBeenCalled();
     });
+  });
 
-    const { rerender } = render(<RowndServerStateSync />);
+  describe('sign-out (token -> null)', () => {
+    it('should trigger cookieSignOut with reload callback when signing out', () => {
+      const mockUseRownd = useRownd as any;
 
-    // Clear the mock calls from initial render
-    vi.clearAllMocks();
+      // Initial render with a token
+      mockUseRownd.mockReturnValue({
+        access_token: 'existing-token',
+        is_initializing: false
+      });
 
-    // Rerender with the same token
-    mockUseRownd.mockReturnValue({
-      access_token: 'same-token',
-      is_initializing: false
+      const { rerender } = render(<RowndServerStateSync />);
+      vi.clearAllMocks();
+
+      // User signs out - token removed
+      mockUseRownd.mockReturnValue({
+        access_token: null,
+        is_initializing: false
+      });
+
+      rerender(<RowndServerStateSync />);
+
+      expect(mockCookieSignOut).toHaveBeenCalledTimes(1);
+      // Should pass a reload callback for sign-out
+      expect(mockCookieSignOut).toHaveBeenCalledWith(expect.any(Function));
+      expect(mockCookieSignIn).not.toHaveBeenCalled();
     });
+  });
 
-    rerender(<RowndServerStateSync />);
+  describe('no change (same token)', () => {
+    it('should not trigger any cookie actions when access token remains the same', () => {
+      const mockUseRownd = useRownd as any;
 
-    expect(mockCookieSignIn).not.toHaveBeenCalled();
-    expect(mockCookieSignOut).not.toHaveBeenCalled();
+      // Initial render with a token
+      mockUseRownd.mockReturnValue({
+        access_token: 'same-token',
+        is_initializing: false
+      });
+
+      const { rerender } = render(<RowndServerStateSync />);
+      vi.clearAllMocks();
+
+      // Rerender with the same token
+      mockUseRownd.mockReturnValue({
+        access_token: 'same-token',
+        is_initializing: false
+      });
+
+      rerender(<RowndServerStateSync />);
+
+      expect(mockCookieSignIn).not.toHaveBeenCalled();
+      expect(mockCookieSignOut).not.toHaveBeenCalled();
+    });
   });
 });

@@ -15,6 +15,12 @@ export type RowndProviderProps = {
   hubUrlOverride?: string;
   postRegistrationUrl?: string;
   postSignOutRedirect?: string;
+  /**
+   * API version date string (e.g., '2026-01-21') that controls which Hub features are enabled.
+   * Defaults to the current SDK version date for new features.
+   * Set to an earlier date to opt-out of newer behaviors.
+   */
+  apiVersion?: string;
   children: React.ReactNode;
 };
 
