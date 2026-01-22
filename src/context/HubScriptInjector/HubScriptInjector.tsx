@@ -15,11 +15,18 @@ function setConfigValue(key: string, value: any) {
   window?._rphConfig.push([key, value]);
 }
 
+/**
+ * Default API version for new SDK releases.
+ * This controls which Hub features are enabled by default.
+ */
+const DEFAULT_API_VERSION = '2026-01-21';
+
 export type HubScriptInjectorProps = {
   appKey: string;
   stateListener: ({ state, api }: HubListenerProps) => void;
   hubUrlOverride?: string;
   locationHash?: string;
+  apiVersion?: string;
 };
 
 // Grab the URL hash ASAP in case it contains an `rph_init` param
@@ -30,6 +37,7 @@ export default function HubScriptInjector({
   appKey,
   hubUrlOverride,
   stateListener,
+  apiVersion = DEFAULT_API_VERSION,
   ...rest
 }: HubScriptInjectorProps) {
 
@@ -66,6 +74,7 @@ export default function HubScriptInjector({
     setConfigValue('setAppKey', appKey);
     setConfigValue('setStateListener', stateListener);
     setConfigValue('setLocationHash', locationHash);
+    setConfigValue('setApiVersion', apiVersion);
 
     if (window.localStorage.getItem('rph_log_level') === 'debug') {
       console.debug('[debug] rest:', rest);
@@ -83,7 +92,7 @@ export default function HubScriptInjector({
         console.debug('[debug] hubConfig:', window._rphConfig);
       }
     }
-  }, [appKey, stateListener, locationHash, hubUrlOverride, rest]);
+  }, [appKey, stateListener, locationHash, hubUrlOverride, apiVersion, rest]);
 
   return null;
 }
