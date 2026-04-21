@@ -14,7 +14,6 @@ export async function syncUserToSuperTokens(
     if (!res.ok) {
       console.warn(`[Rownd->ST] migrate failed with status: ${res.status}`);
     }
-    console.log('[Rownd->ST] migrate success');
   } catch (e) {
     console.warn('[Rownd->ST] migrate failed (non-fatal):', e);
   }

@@ -59,14 +59,12 @@ export const ReactRowndProvider: React.FC<RowndProviderProps> = ({
   const shouldSyncToSuperTokens = useRef(false);
   useEffect(() => {
     const handleSignInCompleted = (event: Event) => {
-      console.log('sign in completed');
       const detail = (event as CustomEvent<{ user_type?: string }>).detail;
 
       if (detail?.user_type === 'new_user') {
         shouldSyncToSuperTokens.current = true;
       }
     };
-    console.log('registering listener');
 
     hubState.events.addEventListener(
       'sign_in_completed',
