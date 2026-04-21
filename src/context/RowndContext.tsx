@@ -21,6 +21,13 @@ export type RowndProviderProps = {
    * Set to an earlier date to opt-out of newer behaviors.
    */
   apiVersion?: string;
+  /**
+   * SuperTokens application info. When set, the React SDK will call the
+   * customer's migration endpoint after a Rownd sign-up completes.
+   */
+  supertokens?: {
+    appInfo: { appName: string; apiDomain: string; apiBasePath: string };
+  };
   children: React.ReactNode;
 };
 
