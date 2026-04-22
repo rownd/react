@@ -9,7 +9,10 @@ import {
   getOnAuthenticatedListeners,
   unsubscribeOnAuthenticatedListener,
 } from '../utils/listeners';
-import { syncUserToSuperTokens } from '../utils/supertokens-sync';
+import {
+  normalizeSuperTokensAppInfo,
+  syncUserToSuperTokens,
+} from '../utils/supertokens-sync';
 
 export const ReactRowndProvider: React.FC<RowndProviderProps> = ({
   children,
@@ -36,8 +39,22 @@ export const ReactRowndProvider: React.FC<RowndProviderProps> = ({
     ...setInitialHubState(),
     onAuthenticated,
   });
+  const accessTokenRef = useRef<string | null>(hubState.access_token);
+  const supertokensAppInfoRef = useRef(
+    normalizeSuperTokensAppInfo(props.supertokens?.appInfo)
+  );
 
   const { user, is_authenticated, is_initializing } = hubState;
+  useEffect(() => {
+    accessTokenRef.current = hubState.access_token;
+  }, [hubState.access_token]);
+
+  useEffect(() => {
+    supertokensAppInfoRef.current = normalizeSuperTokensAppInfo(
+      props.supertokens?.appInfo
+    );
+  }, [props.supertokens]);
+
   useEffect(() => {
     if (!is_authenticated || is_initializing || !user.data.user_id) {
       return;
@@ -55,15 +72,21 @@ export const ReactRowndProvider: React.FC<RowndProviderProps> = ({
     [hubListenerCb]
   );
 
-  // Only sync new sign ups
-  const shouldSyncToSuperTokens = useRef(false);
   useEffect(() => {
     const handleSignInCompleted = (event: Event) => {
       const detail = (event as CustomEvent<{ user_type?: string }>).detail;
 
-      if (detail?.user_type === 'new_user') {
-        shouldSyncToSuperTokens.current = true;
+      if (detail?.user_type !== 'new_user') {
+        return;
       }
+
+      const accessToken = accessTokenRef.current;
+      const appInfo = supertokensAppInfoRef.current;
+      if (!accessToken || !appInfo) {
+        return;
+      }
+
+      syncUserToSuperTokens(accessToken, appInfo).catch(() => {});
     };
 
     hubState.events.addEventListener(
@@ -78,17 +101,6 @@ export const ReactRowndProvider: React.FC<RowndProviderProps> = ({
       );
     };
   }, [hubState.events]);
-
-  useEffect(() => {
-    const accessToken = hubState.access_token;
-    const appInfo = props.supertokens?.appInfo;
-    if (!accessToken || !appInfo || !shouldSyncToSuperTokens.current) {
-      return;
-    }
-
-    shouldSyncToSuperTokens.current = false;
-    syncUserToSuperTokens(accessToken, appInfo).catch(() => {});
-  }, [hubState.access_token, props.supertokens]);
 
   return (
     <InternalRowndProvider stateListener={stateListener} {...props}>

@@ -1,7 +1,8 @@
-import { useRownd } from 'supertokens-rownd-react';
+import { useRownd } from '@rownd/react';
 
 function App() {
-  const { is_authenticated, access_token, user, requestSignIn, signOut } = useRownd();
+  const { is_authenticated, access_token, user, requestSignIn, signOut } =
+    useRownd();
 
   return (
     <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
