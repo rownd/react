@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <RowndProvider
-          appKey="<APP_KEY>"
+          appKey={process.env.NEXT_PUBLIC_ROWND_APP_KEY!}
           supertokens={{
             appInfo: {
               appName: 'Next.js User Migration Example',

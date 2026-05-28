@@ -30,9 +30,10 @@ export function useSuperTokensMigration({
   events,
   supertokens,
 }: UseSuperTokensMigrationProps): void {
+  const appInfo = supertokens?.appInfo;
   const accessTokenRef = useRef<string | null>(accessToken);
   const supertokensAppInfoRef = useRef(
-    normalizeSuperTokensAppInfo(supertokens?.appInfo)
+    normalizeSuperTokensAppInfo(appInfo)
   );
 
   useEffect(() => {
@@ -41,9 +42,9 @@ export function useSuperTokensMigration({
 
   useEffect(() => {
     supertokensAppInfoRef.current = normalizeSuperTokensAppInfo(
-      supertokens?.appInfo
+      appInfo
     );
-  }, [supertokens]);
+  }, [appInfo?.appName, appInfo?.apiDomain, appInfo?.apiBasePath]);
 
   useEffect(() => {
     const handleSignInCompleted = (event: Event) => {

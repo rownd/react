@@ -24,12 +24,17 @@ npm install
 npm run dev
 ```
 
+Set `ROWND_APP_KEY` and `ROWND_APP_SECRET` in `backend/.env` before starting the backend.
+
 Run the Next.js frontend:
 
 ```bash
 cd frontend
+cp .env.example .env.local
 npm install
 npm run dev
 ```
+
+Set `NEXT_PUBLIC_ROWND_APP_KEY` in `frontend/.env.local` to the same Rownd app key used by the backend.
 
 Open `http://localhost:3000`, sign up as a new Rownd user, and verify that the backend receives `POST /auth/plugin/rownd/migrate`.

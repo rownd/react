@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { RowndContext, RowndProviderProps } from './RowndContext';
 import InternalProviderHubScriptInjector from './HubScriptInjector/InternalProviderHubScriptInjector';
 import useHub from '../hooks/useHub';
