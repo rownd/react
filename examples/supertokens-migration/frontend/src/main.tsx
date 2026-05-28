@@ -6,7 +6,7 @@ import { RowndProvider } from '@rownd/react';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <RowndProvider
-      appKey="key_z137wzlry48l6b2p5gy1yt6c"
+      appKey="key_neararrumhj5vnsunt6wi92v"
       supertokens={{
         appInfo: {
           appName: 'User Migration Example',
