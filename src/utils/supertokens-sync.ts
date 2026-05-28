@@ -25,13 +25,13 @@ export async function syncUserToSuperTokens(
   accessToken: string,
   appInfo: SuperTokensAppInfo
 ): Promise<void> {
-  const migrateUrl = new URL(
-    `${appInfo.apiBasePath}/plugin/rownd/migrate`,
-    `${appInfo.apiDomain}/`
-  );
-  const headers = { Authorization: `Bearer ${accessToken}` };
-
   try {
+    const migrateUrl = new URL(
+      `${appInfo.apiBasePath}/plugin/rownd/migrate`,
+      `${appInfo.apiDomain}/`
+    );
+    const headers = { Authorization: `Bearer ${accessToken}` };
+
     const res = await fetch(migrateUrl.toString(), {
       method: 'POST',
       headers,

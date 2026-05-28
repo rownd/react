@@ -10,20 +10,19 @@ import { middleware, errorHandler } from 'supertokens-node/framework/express';
 import RowndPlugin from '@supertokens-plugins/rownd-nodejs';
 
 const PORT = Number(process.env.PORT) || 3001;
-
-const WEBSITE_ORIGIN = process.env.WEBSITE_ORIGIN || 'http://localhost:5173';
+const WEBSITE_ORIGIN = process.env.WEBSITE_ORIGIN || 'http://localhost:3000';
 const HUB_ORIGIN = process.env.HUB_ORIGIN || 'http://localhost:8787';
-
 const ALLOWED_ORIGINS = [WEBSITE_ORIGIN, HUB_ORIGIN];
 
 supertokens.init({
   framework: 'express',
   supertokens: {
-    connectionURI: process.env.SUPERTOKENS_CONNECTION_URI!,
+    connectionURI:
+      process.env.SUPERTOKENS_CONNECTION_URI || 'http://localhost:3567',
     apiKey: process.env.SUPERTOKENS_API_KEY,
   },
   appInfo: {
-    appName: 'User Migration Example',
+    appName: 'Next.js User Migration Example',
     apiDomain: `http://localhost:${PORT}`,
     websiteDomain: WEBSITE_ORIGIN,
     apiBasePath: '/auth',
@@ -35,7 +34,7 @@ supertokens.init({
       flowType: 'USER_INPUT_CODE',
     }),
     Session.init({
-      tokenTransferMethod: 'header',
+      getTokenTransferMethod: () => 'header',
     }),
     UserMetadata.init(),
     AccountLinking.init({
@@ -76,7 +75,6 @@ app.use((req, _res, next) => {
 });
 
 app.use(middleware());
-
 app.use(errorHandler());
 
 app.listen(PORT, () => {
